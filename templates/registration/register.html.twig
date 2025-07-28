@@ -1,0 +1,64 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Register{% endblock %}
+
+{% block body %}
+    {#
+    This is the key to making the form beautiful with Bootstrap.
+    This tag tells Symfony to render this specific form using the built-in
+    Bootstrap 5 layout, which automatically adds the correct classes
+    like .form-control, .form-check, etc.
+    #}
+
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-8 col-lg-6">
+                <div class="card shadow-sm p-4">
+                    <div class="card-body">
+                        <h1 class="card-title text-center mb-4">Register</h1>
+
+                        {# The form_start() function will render the <form> tag #}
+                        {{ form_start(registrationForm, {'attr': {'novalidate': 'novalidate'}}) }}
+
+                        {# Global form errors can be displayed here if needed #}
+                        {{ form_errors(registrationForm) }}
+
+                        {# We can group related fields for better layout #}
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                {{ form_row(registrationForm.firstName) }}
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                {{ form_row(registrationForm.lastName) }}
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            {{ form_row(registrationForm.email) }}
+                        </div>
+
+                        <div class="mb-3">
+                            {{ form_row(registrationForm.plainPassword, {
+                                label: 'Password'
+                            }) }}
+                        </div>
+
+                        <div class="mb-3">
+                            {# The bootstrap_5_layout theme handles checkboxes perfectly #}
+                            {{ form_row(registrationForm.agreeTerms) }}
+                        </div>
+
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-primary btn-lg">Create Account</button>
+                        </div>
+
+                        {{ form_end(registrationForm) }}
+                    </div>
+                </div>
+                <div class="text-center mt-3">
+                    <p>Already have an account? <a href="#">Login here</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
