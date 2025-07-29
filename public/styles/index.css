@@ -1,7 +1,18 @@
-
 body {
+    background-color: gray;
+    /* This makes the body a flex container */
+    display: flex;
+    /* This tells the children to stack vertically */
+    flex-direction: column;
+    /* This is still needed to ensure the body is at least the full viewport height */
+    min-height: 100vh;
     margin: 0;
     padding: 0;
-    background-color: gray;
 }
 
+main {
+    /* This is the magic property. It tells the main content area
+       to "grow" and take up all available empty space, which
+       pushes the footer down to the bottom. */
+    flex-grow: 1;
+}

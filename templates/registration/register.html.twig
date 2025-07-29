@@ -17,13 +17,14 @@
                     <div class="card-body">
                         <h1 class="card-title text-center mb-4">Register</h1>
 
-                        {# The form_start() function will render the <form> tag #}
                         {{ form_start(registrationForm, {'attr': {'novalidate': 'novalidate'}}) }}
 
-                        {# Global form errors can be displayed here if needed #}
+{#                        {{ csrf_token('csrfid') }}#}
+
+                        {# Display any form errors #}
+
                         {{ form_errors(registrationForm) }}
 
-                        {# We can group related fields for better layout #}
                         <div class="row">
                             <div class="col-md-6 mb-3">
                                 {{ form_row(registrationForm.firstName) }}
@@ -44,7 +45,6 @@
                         </div>
 
                         <div class="mb-3">
-                            {# The bootstrap_5_layout theme handles checkboxes perfectly #}
                             {{ form_row(registrationForm.agreeTerms) }}
                         </div>
 

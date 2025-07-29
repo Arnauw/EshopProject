@@ -5,7 +5,6 @@
 {% block body %}
     <div class="container mt-5">
         <div class="row justify-content-center">
-            {# On smaller screens, this column takes up more space, on larger screens it's narrower #}
             <div class="col-md-6 col-lg-5 col-xl-4">
 
                 <div class="card shadow-sm">
@@ -14,36 +13,30 @@
                         <form method="post">
                             <h1 class="h3 mb-4 fw-normal text-center">Please Sign In</h1>
 
-                            {# --- Error Message Display --- #}
                             {% if error %}
                                 <div class="alert alert-danger" role="alert">
                                     {{ error.messageKey|trans(error.messageData, 'security') }}
                                 </div>
                             {% endif %}
 
-                            {# --- Already Logged In Message --- #}
                             {% if app.user %}
                                 <div class="alert alert-info" role="alert">
                                     You are logged in as {{ app.user.userIdentifier }}. <a href="{{ path('app_logout') }}">Logout</a>
                                 </div>
                             {% endif %}
 
-                            {# --- Email Input with Floating Label --- #}
                             <div class="form-floating mb-3">
                                 <input type="email" value="{{ last_username }}" name="_username" id="username" class="form-control" autocomplete="email" required autofocus placeholder="name@example.com">
                                 <label for="username">Email address</label>
                             </div>
 
-                            {# --- Password Input with Floating Label --- #}
                             <div class="form-floating mb-3">
                                 <input type="password" name="_password" id="password" class="form-control" autocomplete="current-password" required placeholder="Password">
                                 <label for="password">Password</label>
                             </div>
 
-                            {# --- CSRF Token (hidden, no style needed) --- #}
                             <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
 
-                            {# --- Remember Me Checkbox (Styled) --- #}
                             <div class="form-check text-start my-3">
                                 {# Uncomment this section and add a remember_me option below your firewall to activate remember me functionality. #}
                                 {# See https://symfony.com/doc/current/security/remember_me.html #}
@@ -55,7 +48,6 @@
                                 #}
                             </div>
 
-                            {# --- Submit Button --- #}
                             <button class="btn btn-primary w-100 py-2" type="submit">
                                 Sign in
                             </button>
@@ -64,7 +56,6 @@
                     </div>
                 </div>
 
-                {# --- Link to Registration Page --- #}
                 <p class="mt-3 text-center text-muted">
                     Don't have an account? <a href="{{ path('app_register') }}">Create one now</a>
                 </p>
