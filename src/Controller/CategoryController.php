@@ -32,6 +32,7 @@ final class CategoryController extends AbstractController
             $category = $form->getData();
             $em->persist($category);
             $em->flush();
+            $this->addFlash('success', 'Category created successfully!');
             return $this->redirectToRoute('app_category');
         }
 
@@ -53,6 +54,8 @@ final class CategoryController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $em->persist($category);
             $em->flush();
+
+            $this->addFlash('success', 'Category updated successfully!');
             return $this->redirectToRoute('app_category');
         }
 
@@ -73,6 +76,8 @@ final class CategoryController extends AbstractController
 
         $em->remove($category);
         $em->flush();
+
+        $this->addFlash('success', 'Category deleted successfully!');
 
         return $this->redirectToRoute('app_category');
 //        return $this->render('category/delete.html.twig', [
