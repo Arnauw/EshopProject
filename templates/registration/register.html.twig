@@ -3,13 +3,6 @@
 {% block title %}Register{% endblock %}
 
 {% block body %}
-    {#
-    This is the key to making the form beautiful with Bootstrap.
-    This tag tells Symfony to render this specific form using the built-in
-    Bootstrap 5 layout, which automatically adds the correct classes
-    like .form-control, .form-check, etc.
-    #}
-
     <div class="container mt-5">
         <div class="row justify-content-center">
             <div class="col-md-8 col-lg-6">
@@ -19,9 +12,7 @@
 
                         {{ form_start(registrationForm, {'attr': {'novalidate': 'novalidate'}}) }}
 
-{#                        {{ csrf_token('csrfid') }}#}
-
-                        {# Display any form errors #}
+                        {#                        {{ csrf_token('csrfid') }} #}
 
                         {{ form_errors(registrationForm) }}
 
@@ -39,7 +30,7 @@
                         </div>
 
                         <div class="mb-3">
-                            {{ form_row(registrationForm.plainPassword, {
+                            {{ form_row(registrationForm.password, {
                                 label: 'Password'
                             }) }}
                         </div>
@@ -49,7 +40,11 @@
                         </div>
 
                         <div class="d-grid">
-                            <button type="submit" class="btn btn-primary btn-lg">Create Account</button>
+                            {{ form_row(registrationForm.submit, {
+                                'label': 'Create Account',
+                                'row_attr': {'class': 'd-grid'},
+                                'attr': {'class': 'btn btn-primary btn-lg'}
+                            }) }}
                         </div>
 
                         {{ form_end(registrationForm) }}

@@ -42,12 +42,8 @@ final class CategoryController extends AbstractController
     }
 
     #[Route('/categories/edit/{id}', name: 'app_category_edit')]
-    public function editCategory($id, Request $req, EntityManagerInterface $em,): Response
+    public function editCategory(Category $category, Request $req, EntityManagerInterface $em,): Response
     {
-        $category = $em->getRepository(Category::class)->find($id);
-        if (!$category) {
-            throw $this->createNotFoundException('Category not found');
-        }
         $form = $this->createForm(CatergoryType::class, $category);
         $form->handleRequest($req);
 
@@ -59,7 +55,6 @@ final class CategoryController extends AbstractController
             return $this->redirectToRoute('app_category');
         }
 
-
         return $this->render('category/edit.html.twig', [
             'category' => $category,
             'form' => $form->createView(),
@@ -67,21 +62,12 @@ final class CategoryController extends AbstractController
     }
 
     #[Route('/categories/delete/{id}', name: 'app_category_delete')]
-    public function deleteCategory($id, Request $req, EntityManagerInterface $em,): Response
+    public function deleteCategory(Category $category, Request $req, EntityManagerInterface $em,): Response
     {
-        $category = $em->getRepository(Category::class)->find($id);
-        if (!$category) {
-            throw $this->createNotFoundException('Category not found');
-        }
-
         $em->remove($category);
         $em->flush();
 
         $this->addFlash('success', 'Category deleted successfully!');
-
         return $this->redirectToRoute('app_category');
-//        return $this->render('category/delete.html.twig', [
-//            'category' => $category,
-//        ]);
     }
 }
