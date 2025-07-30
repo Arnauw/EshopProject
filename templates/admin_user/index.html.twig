@@ -22,27 +22,17 @@
                             <div>
                                 <span class="fw-bold">{{ user.firstname }}</span>
                                 <div class="mt-1">
-                                    {#
-                                    1. DEFINE THE MASTER ORDER
-                                    This array controls the display order of the roles.
-                                    #}
-                                    {% set role_order = ['ROLE_ADMIN', 'ROLE_EDITOR', 'ROLE_USER'] %}
 
-                                    {#
-                                    2. LOOP THROUGH THE MASTER ORDER
-                                    Instead of looping on admin_user.roles, we loop through our fixed list.
-                                    #}
+                                    {% set role_order = ['ROLE_ADMIN', 'ROLE_EDITOR', 'ROLE_USER'] %}
                                     {% for role_to_display in role_order %}
 
-                                        {# 3. CHECK IF THE USER HAS THIS ROLE #}
                                         {% if role_to_display in user.roles %}
 
-                                            {# The coloring logic remains the same #}
                                             {% set badge_color = '' %}
                                             {% if role_to_display == 'ROLE_ADMIN' %}
                                                 {% set badge_color = 'bg-success' %}
                                             {% elseif role_to_display == 'ROLE_EDITOR' %}
-                                                {% set badge_color = 'bg-warning' %}
+                                                {% set badge_color = 'bg-info' %}
                                             {% elseif role_to_display == 'ROLE_USER' %}
                                                 {% set badge_color = 'bg-primary' %}
                                             {% else %}

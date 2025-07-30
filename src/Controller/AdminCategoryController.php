@@ -2,7 +2,7 @@
 
 namespace App\Controller;
 
-use App\Form\CatergoryType;
+use App\Form\CategoryType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -26,7 +26,7 @@ final class AdminCategoryController extends AbstractController
     public function createCategory(Request $req, EntityManagerInterface $em,): Response
     {
 
-        $form = $this->createForm(CatergoryType::class);
+        $form = $this->createForm(CategoryType::class);
         $form->handleRequest($req);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -45,7 +45,7 @@ final class AdminCategoryController extends AbstractController
     #[Route('/categories/edit/{id}', name: 'app_category_edit')]
     public function editCategory(Category $category, Request $req, EntityManagerInterface $em,): Response
     {
-        $form = $this->createForm(CatergoryType::class, $category);
+        $form = $this->createForm(CategoryType::class, $category);
         $form->handleRequest($req);
 
         if ($form->isSubmitted() && $form->isValid()) {

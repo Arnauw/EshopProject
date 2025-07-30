@@ -38,13 +38,26 @@
                             </li>
                         {% endif %}
 
+                        {% if 'subcategory' not in app.request.pathInfo %}
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="{{ path('app_subCategory_index') }}" role="button"
+                                   aria-expanded="false">
+                                    Subcategories
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li><a class="dropdown-item" href="{{ path('app_subCategory_new') }}">Create new
+                                            subcategory</a></li>
+                                </ul>
+                            </li>
+                        {% endif %}
+
                         {% if 'product' not in app.request.pathInfo %}
                             <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" role="button" aria-expanded="false">
+                                <a class="nav-link dropdown-toggle" role="button" aria-expanded="false" href="{{ path('app_product_index') }}">
                                     Products
                                 </a>
                                 <ul class="dropdown-menu">
-                                    <li><a class="dropdown-item">Create new product</a></li>
+                                    <li><a class="dropdown-item" href="{{ path('app_product_new') }}">Create new product</a></li>
                                 </ul>
                             </li>
                         {% endif %}
