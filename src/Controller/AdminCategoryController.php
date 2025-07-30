@@ -10,7 +10,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use App\Entity\Category;
 #[Route('/admin')]
-final class CategoryController extends AbstractController
+final class AdminCategoryController extends AbstractController
 {
     #[Route('/categories/show', name: 'app_category_show')]
     public function showCategories(EntityManagerInterface $em,): Response

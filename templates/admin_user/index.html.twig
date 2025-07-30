@@ -1,0 +1,74 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Manage users{% endblock %}
+
+{% block body %}
+    <div class="container mt-5">
+
+        <div class="row justify-content-center">
+            <div class="col-md-10 col-lg-8">
+
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h1 class="mb-0">Users</h1>
+                    <a href="{{ path('app_user_new') }}" class="btn btn-primary">
+                        Create New
+                    </a>
+                </div>
+
+                <div class="list-group shadow-sm">
+                    {% for user in users %}
+                        <div class="list-group-item d-flex justify-content-between align-items-center">
+
+                            <div>
+                                <span class="fw-bold">{{ user.firstname }}</span>
+                                <div class="mt-1">
+                                    {#
+                                    1. DEFINE THE MASTER ORDER
+                                    This array controls the display order of the roles.
+                                    #}
+                                    {% set role_order = ['ROLE_ADMIN', 'ROLE_EDITOR', 'ROLE_USER'] %}
+
+                                    {#
+                                    2. LOOP THROUGH THE MASTER ORDER
+                                    Instead of looping on admin_user.roles, we loop through our fixed list.
+                                    #}
+                                    {% for role_to_display in role_order %}
+
+                                        {# 3. CHECK IF THE USER HAS THIS ROLE #}
+                                        {% if role_to_display in user.roles %}
+
+                                            {# The coloring logic remains the same #}
+                                            {% set badge_color = '' %}
+                                            {% if role_to_display == 'ROLE_ADMIN' %}
+                                                {% set badge_color = 'bg-success' %}
+                                            {% elseif role_to_display == 'ROLE_EDITOR' %}
+                                                {% set badge_color = 'bg-warning' %}
+                                            {% elseif role_to_display == 'ROLE_USER' %}
+                                                {% set badge_color = 'bg-primary' %}
+                                            {% else %}
+                                                {% set badge_color = 'bg-secondary' %}
+                                            {% endif %}
+
+                                            <span class="badge {{ badge_color }}">{{ role_to_display|replace({'ROLE_':''}) }}</span>
+                                        {% endif %}
+                                    {% endfor %}
+                                </div>
+                            </div>
+
+                            <div class="ms-3">
+                                <a href="{{ path('app_user_edit', {'id': user.id}) }}" class="btn btn-sm btn-outline-secondary">Edit</a>
+                            </div>
+                        </div>
+                    {% else %}
+                        <div class="list-group-item">
+                            <div class="alert alert-info mb-0" role="alert">
+                                No users found. <a href="{{ path('app_user_new') }}" class="alert-link">Create the first one!</a>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -40,33 +40,46 @@ class RegistrationFormType extends AbstractType
 
         if ($options['is_registration_form']) {
             $builder
-                ->add('agreeTerms', CheckboxType::class, [
-                    'mapped' => false,
-                    'constraints' => [
-                        new IsTrue([
-                            'message' => 'You should agree to our terms.',
-                        ]),
-                    ],
-                ])
                 ->add('password', RepeatedType::class, [
-                    'type' => PasswordType::class,
-                    'invalid_message' => 'The password fields must match.',
-                    'options' => ['attr' => ['class' => 'password-field']],
-                    'attr' => ['autocomplete' => 'new-password'],
-                    'required' => true,
-                    'first_options' => ['label' => 'Password'],
-                    'second_options' => ['label' => 'Repeat Password'],
-                    'constraints' => [
-                        new NotBlank([
-                            'message' => 'Please enter a password',
-                        ]),
-                        new Length([
-                            'min' => 4,
-                            'minMessage' => 'Your password should be at least {{ limit }} characters',
-                            'max' => 4096,
-                        ]),
-                    ],
-                ]);
+                'type' => PasswordType::class,
+                'invalid_message' => 'The password fields must match.',
+                'options' => ['attr' => ['class' => 'password-field']],
+                'attr' => ['autocomplete' => 'new-password'],
+                'required' => true,
+                'first_options' => ['label' => 'Password'],
+                'second_options' => ['label' => 'Repeat Password'],
+                'constraints' => [
+                    new NotBlank([
+                        'message' => 'Please enter a password',
+                    ]),
+                    new Length([
+                        'min' => 4,
+                        'minMessage' => 'Your password should be at least {{ limit }} characters',
+                        'max' => 4096,
+                    ]),
+                ],
+            ]);
+
+
+
+
+
+
+
+
+
+
+            if (!$options['is_admin_form_create']) {
+                $builder
+                    ->add('agreeTerms', CheckboxType::class, [
+                        'mapped' => false,
+                        'constraints' => [
+                            new IsTrue([
+                                'message' => 'You should agree to our terms.',
+                            ]),
+                        ],
+                    ]);
+            }
         }
 
         $builder->add('submit', SubmitType::class, []);
