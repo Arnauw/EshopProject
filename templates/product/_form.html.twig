@@ -1,4 +1,25 @@
 {{ form_start(form) }}
-    {{ form_widget(form) }}
-    <button class="btn">{{ button_label|default('Save') }}</button>
+    {# We render each field with form_row for automatic Bootstrap styling #}
+<div class="mb-3">
+    {{ form_row(form.name) }}
+</div>
+
+<div class="mb-3">
+    {{ form_row(form.description) }}
+</div>
+
+{# Place price and subcategory side-by-side on larger screens #}
+<div class="row">
+    <div class="col-md-6 mb-3">
+        {{ form_row(form.price) }}
+    </div>
+    <div class="col-md-6 mb-3">
+        {{ form_row(form.subcategory) }}
+    </div>
+</div>
+
+{# The main action button, styled to be large and blue #}
+<div class="d-grid">
+    <button class="btn btn-primary btn-lg">{{ button_label|default('Save') }}</button>
+</div>
 {{ form_end(form) }}

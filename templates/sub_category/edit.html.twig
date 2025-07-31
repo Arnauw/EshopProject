@@ -1,13 +1,31 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Edit SubCategory{% endblock %}
+{% block title %}Edit Subcategory{% endblock %}
 
 {% block body %}
-    <h1>Edit SubCategory</h1>
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-8 col-lg-6">
+                <div class="card shadow-sm">
+                    <div class="card-body p-4">
+                        <h1 class="card-title text-center mb-4">Edit Subcategory</h1>
+                        {{ include('sub_category/_form.html.twig', {'button_label': 'Update'}) }}
+                    </div>
 
-    {{ include('sub_category/_form.html.twig', {'button_label': 'Update'}) }}
+                    {# The footer now uses a horizontal rule for separation, like the reference image #}
+                    <hr class="my-0">
 
-    <a href="{{ path('app_subCategory_index') }}">back to list</a>
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center">
+                            {# Style the link as a light button #}
+                            <a href="{{ path('app_subCategory_index') }}" class="btn btn-light">Back to list</a>
 
-    {{ include('sub_category/_delete_form.html.twig') }}
+                            {# The delete form is included here, and will now have the red button #}
+                            {{ include('sub_category/_delete_form.html.twig') }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 {% endblock %}
