@@ -4,7 +4,6 @@
 
 {% block body %}
     <div class="container mt-5">
-
         <div class="row justify-content-center">
             <div class="col-md-10 col-lg-8">
 
@@ -17,13 +16,29 @@
 
                 <div class="list-group shadow-sm">
                     {% for category in categories %}
-                        <div class="list-group-item d-flex justify-content-between align-items-center">
+                        {# Use align-items-start to keep buttons aligned to the top if badges wrap to a new line #}
+                        <div class="list-group-item d-flex justify-content-between align-items-start">
 
-                            <span class="fw-bold">{{ category.name }}</span>
+                            {# Left side: Contains the main category name and its subcategories #}
+                            <div>
+                                <span class="fw-bold">{{ category.name }}</span>
 
+                                {# ---- NEW PART: Subcategory Loop ---- #}
+                                {% if category.subcategories is not empty %}
+                                    <div class="mt-2">
+                                        {% for subcategory in category.subcategories %}
+                                            {# Display each subcategory as a Bootstrap badge #}
+                                            <span class="badge bg-secondary fw-normal me-1">{{ subcategory.name }}</span>
+                                        {% endfor %}
+                                    </div>
+                                {% endif %}
+                                {# ---- END NEW PART ---- #}
+                            </div>
+
+                            {# Right side: Contains the action buttons for the main category #}
                             <div class="ms-3">
                                 <a href="{{ path('app_category_edit', {'id': category.id}) }}" class="btn btn-sm btn-outline-secondary">Edit</a>
-
+                                {# Add delete form here if needed #}
                             </div>
                         </div>
                     {% else %}
