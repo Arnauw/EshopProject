@@ -12,15 +12,12 @@
                         {{ include('sub_category/_form.html.twig', {'button_label': 'Update'}) }}
                     </div>
 
-                    {# The footer now uses a horizontal rule for separation, like the reference image #}
                     <hr class="my-0">
 
                     <div class="card-body">
                         <div class="d-flex justify-content-between align-items-center">
-                            {# Style the link as a light button #}
                             <a href="{{ path('app_subCategory_index') }}" class="btn btn-light">Back to list</a>
 
-                            {# The delete form is included here, and will now have the red button #}
                             {{ include('sub_category/_delete_form.html.twig') }}
                         </div>
                     </div>

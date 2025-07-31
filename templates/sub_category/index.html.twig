@@ -15,32 +15,27 @@
                 </div>
 
                 {% if sub_categories is not empty %}
-                    {# The "Fake" Table Header - hidden on mobile for better spacing #}
                     <div class="row text-muted fw-bold d-none d-md-flex mb-2 px-3">
                         <div class="col-md-5">Subcategory</div>
                         <div class="col-md-4">Parent Category</div>
                         <div class="col-md-3 text-end">Actions</div>
                     </div>
 
-                    {# The List Group acts as our "Fake" Table Body #}
                     <div class="list-group shadow-sm">
                         {% for sub_category in sub_categories %}
                             <div class="list-group-item">
                                 <div class="row align-items-center">
 
-                                    {# Column 1: Subcategory Name #}
                                     <div class="col-12 col-md-5 mb-2 mb-md-0">
                                         <span class="fw-bold">{{ sub_category.name }}</span>
                                     </div>
 
-                                    {# Column 2: Parent Category (as a badge for consistency) #}
                                     <div class="col-12 col-md-4 mb-2 mb-md-0">
                                         {% if sub_category.category %}
                                             <span class="badge bg-info text-dark fw-normal">{{ sub_category.category.name }}</span>
                                         {% endif %}
                                     </div>
 
-                                    {# Column 3: Action Buttons #}
                                     <div class="col-12 col-md-3 text-md-end">
                                         {# We use btn-light to keep the buttons subtle, as requested #}
                                         <a href="{{ path('app_subCategory_edit', {'id': sub_category.id}) }}" class="btn btn-light btn-sm">Edit</a>
@@ -50,7 +45,6 @@
                         {% endfor %}
                     </div>
                 {% else %}
-                    {# This is the fallback message if there are no subcategories #}
                     <div class="alert alert-info mb-0">
                         No subcategories found. <a href="{{ path('app_subCategory_new') }}" class="alert-link">Create the first one!</a>
                     </div>

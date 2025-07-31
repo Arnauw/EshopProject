@@ -21,9 +21,7 @@
                         </li>
                     {% endif %}
 
-                    {# This block of links will ONLY show if the route contains 'admin' #}
                     {% if 'admin' in app.request.pathInfo %}
-
 
                         {% if 'categories' not in app.request.pathInfo %}
                             <li class="nav-item dropdown">

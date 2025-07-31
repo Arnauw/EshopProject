@@ -11,14 +11,12 @@
 
                         <h1 class="card-title text-center mb-4">New Subcategory</h1>
 
-                        {# This now includes your styled form partial #}
                         {{ include('sub_category/_form.html.twig', {
                             'button_label': 'Create Subcategory'
                         }) }}
 
                     </div>
 
-                    {# Add a consistent "back to list" link in the card footer #}
                     <div class="card-footer bg-transparent border-top-0 text-center pb-3">
                         <a href="{{ path('app_subCategory_index') }}">Back to list</a>
                     </div>

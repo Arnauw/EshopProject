@@ -15,27 +15,21 @@
                 </div>
 
                 {% if categories is not empty %}
-                    {# This row acts as our "fake" table header and is hidden on small screens #}
                     <div class="row text-muted fw-bold d-none d-md-flex mb-2 px-3">
                         <div class="col-md-4">Category</div>
                         <div class="col-md-6">Subcategories</div>
                         <div class="col-md-2 text-end">Actions</div>
                     </div>
 
-                    {# The List Group acts as our "fake" table body #}
                     <div class="list-group shadow-sm">
                         {% for category in categories %}
-                            {# Each list-group-item is a "row" #}
                             <div class="list-group-item">
-                                {# We use the Bootstrap Grid INSIDE the list item for column alignment #}
                                 <div class="row align-items-center">
 
-                                    {# Column 1: Category Name #}
                                     <div class="col-12 col-md-4 mb-2 mb-md-0">
                                         <span class="fw-bold">{{ category.name }}</span>
                                     </div>
 
-                                    {# Column 2: Subcategory Badges #}
                                     <div class="col-12 col-md-6 mb-2 mb-md-0">
                                         {% if category.subcategories is not empty %}
                                             {% for subcategory in category.subcategories %}
@@ -46,7 +40,6 @@
                                         {% endif %}
                                     </div>
 
-                                    {# Column 3: Action Buttons #}
                                     <div class="col-12 col-md-2 text-md-end">
                                         <a href="{{ path('app_category_edit', {'id': category.id}) }}" class="btn btn-light btn-sm">Edit</a>
                                     </div>
@@ -55,7 +48,6 @@
                         {% endfor %}
                     </div>
                 {% else %}
-                    {# This is the fallback message if there are no categories at all #}
                     <div class="alert alert-info mb-0">
                         No categories found. <a href="{{ path('app_category_new') }}" class="alert-link">Create the first one!</a>
                     </div>

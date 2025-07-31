@@ -15,7 +15,6 @@
                 </div>
 
                 {% if products is not empty %}
-                    {# The "Fake" Table Header, now with a dedicated column for the subcategory #}
                     <div class="row text-muted fw-bold d-none d-md-flex mb-2 px-3">
                         <div class="col-md-4">Product</div>
                         <div class="col-md-3">Subcategory</div>
@@ -23,20 +22,16 @@
                         <div class="col-md-3 text-end">Actions</div>
                     </div>
 
-                    {# The List Group acts as our "Fake" Table Body #}
                     <div class="list-group shadow-sm">
                         {% for product in products %}
                             <div class="list-group-item">
                                 <div class="row align-items-center">
 
-                                    {# Column 1: Product Name & Description #}
                                     <div class="col-12 col-md-4 mb-2 mb-md-0">
                                         <span class="fw-bold">{{ product.name }}</span>
-                                        {# The description is now small, muted text under the name #}
                                         <small class="d-block text-muted">{{ product.description|slice(0, 60) }}{{ product.description|length > 60 ? '...' : '' }}</small>
                                     </div>
 
-                                    {# Column 2: The new dedicated Subcategory column #}
                                     <div class="col-12 col-md-3 mb-2 mb-md-0">
                                         {% if product.subcategory %}
                                             <span class="badge bg-info text-dark fw-normal">{{ product.subcategory.current.name }}</span>
@@ -45,12 +40,10 @@
                                         {% endif %}
                                     </div>
 
-                                    {# Column 3: Price #}
                                     <div class="col-12 col-md-2 mb-2 mb-md-0">
                                         <span class="fw-bold">{{ product.price|number_format(2, ',', ' ') }} €</span>
                                     </div>
 
-                                    {# Column 4: Action Buttons #}
                                     <div class="col-12 col-md-3 text-md-end">
                                         <a href="{{ path('app_product_edit', {'id': product.id}) }}" class="btn btn-light btn-sm">Edit</a>
                                     </div>
