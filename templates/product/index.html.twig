@@ -1,40 +1,71 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Product index{% endblock %}
+{% block title %}Manage Products{% endblock %}
 
 {% block body %}
-    <h1>Product index</h1>
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-10 col-lg-8">
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Name</th>
-                <th>Description</th>
-                <th>Price</th>
-                <th>actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for product in products %}
-            <tr>
-                <td>{{ product.id }}</td>
-                <td>{{ product.name }}</td>
-                <td>{{ product.description }}</td>
-                <td>{{ product.price }}</td>
-{#                <td>{{ product.subcategory }}</td>#}
-                <td>
-                    <a href="{{ path('app_product_show', {'id': product.id}) }}">show</a>
-                    <a href="{{ path('app_product_edit', {'id': product.id}) }}">edit</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="5">no records found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h1 class="mb-0">Products</h1>
+                    <a href="{{ path('app_product_new') }}" class="btn btn-primary">
+                        Create New
+                    </a>
+                </div>
 
-    <a href="{{ path('app_product_new') }}">Create new</a>
+                {% if products is not empty %}
+                    {# The "Fake" Table Header, now with a dedicated column for the subcategory #}
+                    <div class="row text-muted fw-bold d-none d-md-flex mb-2 px-3">
+                        <div class="col-md-4">Product</div>
+                        <div class="col-md-3">Subcategory</div>
+                        <div class="col-md-2">Price</div>
+                        <div class="col-md-3 text-end">Actions</div>
+                    </div>
+
+                    {# The List Group acts as our "Fake" Table Body #}
+                    <div class="list-group shadow-sm">
+                        {% for product in products %}
+                            <div class="list-group-item">
+                                <div class="row align-items-center">
+
+                                    {# Column 1: Product Name & Description #}
+                                    <div class="col-12 col-md-4 mb-2 mb-md-0">
+                                        <span class="fw-bold">{{ product.name }}</span>
+                                        {# The description is now small, muted text under the name #}
+                                        <small class="d-block text-muted">{{ product.description|slice(0, 60) }}{{ product.description|length > 60 ? '...' : '' }}</small>
+                                    </div>
+
+                                    {# Column 2: The new dedicated Subcategory column #}
+                                    <div class="col-12 col-md-3 mb-2 mb-md-0">
+                                        {% if product.subcategory %}
+                                            <span class="badge bg-info text-dark fw-normal">{{ product.subcategory.current.name }}</span>
+                                        {% else %}
+                                            <span class="text-muted fst-italic">None</span>
+                                        {% endif %}
+                                    </div>
+
+                                    {# Column 3: Price #}
+                                    <div class="col-12 col-md-2 mb-2 mb-md-0">
+                                        <span class="fw-bold">{{ product.price|number_format(2, ',', ' ') }} €</span>
+                                    </div>
+
+                                    {# Column 4: Action Buttons #}
+                                    <div class="col-12 col-md-3 text-md-end">
+                                        <a href="{{ path('app_product_show', {'id': product.id}) }}" class="btn btn-light btn-sm">Show</a>
+                                        <a href="{{ path('app_product_edit', {'id': product.id}) }}" class="btn btn-light btn-sm">Edit</a>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    <div class="alert alert-info mb-0">
+                        No products found. <a href="{{ path('app_product_new') }}" class="alert-link">Create the first one!</a>
+                    </div>
+                {% endif %}
+
+            </div>
+        </div>
+    </div>
 {% endblock %}

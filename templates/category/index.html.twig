@@ -14,41 +14,52 @@
                     </a>
                 </div>
 
-                <div class="list-group shadow-sm">
-                    {% for category in categories %}
-                        {# Use align-items-start to keep buttons aligned to the top if badges wrap to a new line #}
-                        <div class="list-group-item d-flex justify-content-between align-items-start">
+                {% if categories is not empty %}
+                    {# This row acts as our "fake" table header and is hidden on small screens #}
+                    <div class="row text-muted fw-bold d-none d-md-flex mb-2 px-3">
+                        <div class="col-md-4">Category</div>
+                        <div class="col-md-6">Subcategories</div>
+                        <div class="col-md-2 text-end">Actions</div>
+                    </div>
 
-                            {# Left side: Contains the main category name and its subcategories #}
-                            <div>
-                                <span class="fw-bold">{{ category.name }}</span>
+                    {# The List Group acts as our "fake" table body #}
+                    <div class="list-group shadow-sm">
+                        {% for category in categories %}
+                            {# Each list-group-item is a "row" #}
+                            <div class="list-group-item">
+                                {# We use the Bootstrap Grid INSIDE the list item for column alignment #}
+                                <div class="row align-items-center">
 
-                                {# ---- NEW PART: Subcategory Loop ---- #}
-                                {% if category.subcategories is not empty %}
-                                    <div class="mt-2">
-                                        {% for subcategory in category.subcategories %}
-                                            {# Display each subcategory as a Bootstrap badge #}
-                                            <span class="badge bg-secondary fw-normal me-1">{{ subcategory.name }}</span>
-                                        {% endfor %}
+                                    {# Column 1: Category Name #}
+                                    <div class="col-12 col-md-4 mb-2 mb-md-0">
+                                        <span class="fw-bold">{{ category.name }}</span>
                                     </div>
-                                {% endif %}
-                                {# ---- END NEW PART ---- #}
-                            </div>
 
-                            {# Right side: Contains the action buttons for the main category #}
-                            <div class="ms-3">
-                                <a href="{{ path('app_category_edit', {'id': category.id}) }}" class="btn btn-sm btn-outline-secondary">Edit</a>
-                                {# Add delete form here if needed #}
+                                    {# Column 2: Subcategory Badges #}
+                                    <div class="col-12 col-md-6 mb-2 mb-md-0">
+                                        {% if category.subcategories is not empty %}
+                                            {% for subcategory in category.subcategories %}
+                                                <span class="badge bg-secondary fw-normal me-1">{{ subcategory.name }}</span>
+                                            {% endfor %}
+                                        {% else %}
+                                            <span class="text-muted fst-italic">No subcategories</span>
+                                        {% endif %}
+                                    </div>
+
+                                    {# Column 3: Action Buttons #}
+                                    <div class="col-12 col-md-2 text-md-end">
+                                        <a href="{{ path('app_category_edit', {'id': category.id}) }}" class="btn btn-light btn-sm">Edit</a>
+                                    </div>
+                                </div>
                             </div>
-                        </div>
-                    {% else %}
-                        <div class="list-group-item">
-                            <div class="alert alert-info mb-0" role="alert">
-                                No categories found. <a href="{{ path('app_category_new') }}" class="alert-link">Create the first one!</a>
-                            </div>
-                        </div>
-                    {% endfor %}
-                </div>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    {# This is the fallback message if there are no categories at all #}
+                    <div class="alert alert-info mb-0">
+                        No categories found. <a href="{{ path('app_category_new') }}" class="alert-link">Create the first one!</a>
+                    </div>
+                {% endif %}
 
             </div>
         </div>

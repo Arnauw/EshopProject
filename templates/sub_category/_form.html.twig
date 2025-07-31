@@ -1,8 +1,18 @@
 {{ form_start(form) }}
 
-{{ form_row(form.name) }}
-{{ form_row(form.category) }}
+    {# Add a margin-bottom wrapper for consistent spacing #}
+<div class="mb-3">
+    {{ form_row(form.name) }}
+</div>
 
-{#    {{ form_widget(form) }}#}
-    <button class="btn">{{ button_label|default('Save') }}</button>
+{# Also wrap the category dropdown for spacing #}
+<div class="mb-3">
+    {{ form_row(form.category) }}
+</div>
+
+{# Style the button to be full-width and blue, just like the Category form #}
+<div class="d-grid">
+    <button class="btn btn-primary btn-lg">{{ button_label|default('Save') }}</button>
+</div>
+
 {{ form_end(form) }}
