@@ -15,11 +15,14 @@
                 </div>
 
                 {% if products is not empty %}
-                    <div class="row text-muted fw-bold d-none d-md-flex mb-2 px-3">
-                        <div class="col-md-4">Product</div>
-                        <div class="col-md-3">Subcategory</div>
+                    {# The "Fake" Table Header, now with the correct columns #}
+                    <div class="row text-muted fw-bold d-none d-md-flex mb-2 px-3 align-items-center">
+                        <div class="col-md-2">Image</div>
+                        <div class="col-md-3">Product</div>
+                        <div class="col-md-2">Subcategory</div>
                         <div class="col-md-2">Price</div>
-                        <div class="col-md-3 text-end">Actions</div>
+                        <div class="col-md-1">Stock</div>
+                        <div class="col-md-2 text-end">Actions</div>
                     </div>
 
                     <div class="list-group shadow-sm">
@@ -27,12 +30,25 @@
                             <div class="list-group-item">
                                 <div class="row align-items-center">
 
-                                    <div class="col-12 col-md-4 mb-2 mb-md-0">
-                                        <span class="fw-bold">{{ product.name }}</span>
-                                        <small class="d-block text-muted">{{ product.description|slice(0, 60) }}{{ product.description|length > 60 ? '...' : '' }}</small>
+                                    {# Column 1: Image #}
+                                    <div class="col-12 col-md-2 mb-2 mb-md-0">
+                                        {% if product.image is not empty %}
+                                            <img src="{{ asset('uploads/imgs/products/' ~ product.image) }}" alt="{{ product.name }}" class="img-fluid rounded border">
+                                        {% else %}
+                                            <div class="d-flex align-items-center justify-content-center bg-light rounded border" style="height: 60px;">
+                                                <i class="fas fa-image text-muted"></i>
+                                            </div>
+                                        {% endif %}
                                     </div>
 
+                                    {# Column 2: Product Name & Description #}
                                     <div class="col-12 col-md-3 mb-2 mb-md-0">
+                                        <span class="fw-bold">{{ product.name }}</span>
+                                        <small class="d-block text-muted">{{ product.description|slice(0, 40) }}{{ product.description|length > 40 ? '...' : '' }}</small>
+                                    </div>
+
+                                    {# Column 3: Subcategory #}
+                                    <div class="col-12 col-md-2 mb-2 mb-md-0">
                                         {% if product.subcategory %}
                                             <span class="badge bg-info text-dark fw-normal">{{ product.subcategory.current.name }}</span>
                                         {% else %}
@@ -40,11 +56,18 @@
                                         {% endif %}
                                     </div>
 
+                                    {# Column 4: Price #}
                                     <div class="col-12 col-md-2 mb-2 mb-md-0">
                                         <span class="fw-bold">{{ product.price|number_format(2, ',', ' ') }} €</span>
                                     </div>
 
-                                    <div class="col-12 col-md-3 text-md-end">
+                                    {# Column 5: The new Stock column #}
+                                    <div class="col-12 col-md-1 mb-2 mb-md-0">
+                                        <span class="fw-bold">{{ product.stock == 0 ? "Out of Stock" : product.stock }}</span>
+                                    </div>
+
+                                    {# Column 6: Actions #}
+                                    <div class="col-12 col-md-2 text-md-end">
                                         <a href="{{ path('app_product_edit', {'id': product.id}) }}" class="btn btn-light btn-sm">Edit</a>
                                     </div>
                                 </div>

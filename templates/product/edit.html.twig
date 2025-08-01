@@ -9,7 +9,13 @@
                 <div class="card shadow-sm">
                     <div class="card-body p-4">
                         <h1 class="card-title text-center mb-4">Edit Product</h1>
-                        {{ include('product/_form.html.twig', {'button_label': 'Update'}) }}
+
+                        {# We now pass the 'product' object into the include #}
+                        {{ include('product/_form.html.twig', {
+                            'button_label': 'Update',
+                            'form': form,
+                            'product': product
+                        }) }}
                     </div>
 
                     <hr class="my-0">

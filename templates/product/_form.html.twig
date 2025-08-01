@@ -12,7 +12,24 @@
         {{ form_row(form.price) }}
     </div>
     <div class="col-md-6 mb-3">
-        {{ form_row(form.subcategory) }}
+        {{ form_row(form.stock) }}
+    </div>
+</div>
+
+<div class="col-md-6 mb-3">
+    {{ form_row(form.subcategory) }}
+</div>
+
+<div class="mb-3">
+    {# This is the image upload field. Its ID is dynamically available via form.image.vars.id #}
+    {{ form_row(form.image) }}
+
+    {# The preview container, with a dynamic ID to be safe #}
+    <div id="{{ form.vars.id }}_preview_container" class="mt-2" style="{{ (product is defined and product.image) ? 'display: block;' : 'display: none;' }}">
+        <img id="{{ form.vars.id }}_preview_image"
+             src="{{ (product is defined and product.image) ? asset('uploads/imgs/products/' ~ product.image) : '#' }}"
+             alt="Image preview"
+             class="img-fluid rounded border" />
     </div>
 </div>
 

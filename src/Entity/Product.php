@@ -15,7 +15,7 @@ class Product
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, unique: true)]
     private ?string $name = null;
 
     #[ORM\Column(length: 255, nullable: true)]
@@ -30,9 +30,22 @@ class Product
     #[ORM\ManyToMany(targetEntity: SubCategory::class, inversedBy: 'products')]
     private Collection $subcategory;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $image = null;
+
+    #[ORM\Column]
+    private ?int $stock = null;
+
+    /**
+     * @var Collection<int, ProductHistory>
+     */
+    #[ORM\OneToMany(targetEntity: ProductHistory::class, mappedBy: 'product')]
+    private Collection $productHistories;
+
     public function __construct()
     {
         $this->subcategory = new ArrayCollection();
+        $this->productHistories = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -96,6 +109,60 @@ class Product
     public function removeSubcategory(SubCategory $subcategory): static
     {
         $this->subcategory->removeElement($subcategory);
+
+        return $this;
+    }
+
+    public function getImage(): ?string
+    {
+        return $this->image;
+    }
+
+    public function setImage(?string $image): static
+    {
+        $this->image = $image;
+
+        return $this;
+    }
+
+    public function getStock(): ?int
+    {
+        return $this->stock;
+    }
+
+    public function setStock(int $stock): static
+    {
+        $this->stock = $stock;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, ProductHistory>
+     */
+    public function getProductHistories(): Collection
+    {
+        return $this->productHistories;
+    }
+
+    public function addProductHistory(ProductHistory $productHistory): static
+    {
+        if (!$this->productHistories->contains($productHistory)) {
+            $this->productHistories->add($productHistory);
+            $productHistory->setProduct($this);
+        }
+
+        return $this;
+    }
+
+    public function removeProductHistory(ProductHistory $productHistory): static
+    {
+        if ($this->productHistories->removeElement($productHistory)) {
+            // set the owning side to null (unless already changed)
+            if ($productHistory->getProduct() === $this) {
+                $productHistory->setProduct(null);
+            }
+        }
 
         return $this;
     }

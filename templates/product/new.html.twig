@@ -8,13 +8,10 @@
             <div class="col-md-8 col-lg-6">
                 <div class="card shadow-sm">
                     <div class="card-body p-4">
-
                         <h1 class="card-title text-center mb-4">New Product</h1>
-
                         {{ include('product/_form.html.twig', {
                             'button_label': 'Create Product'
                         }) }}
-
                     </div>
                     <div class="card-footer bg-transparent border-top-0 text-center pb-3">
                         <a href="{{ path('app_product_index') }}">Back to list</a>
