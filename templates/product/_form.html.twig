@@ -16,15 +16,16 @@
     </div>
 </div>
 
-<div class="col-md-6 mb-3">
+{# FIXED: This div was incorrectly using col-md-6. It should be a full-width element. #}
+<div class="mb-3">
     {{ form_row(form.subcategory) }}
 </div>
 
 <div class="mb-3">
     {{ form_row(form.image) }}
 
-    <div id="{{ form.vars.id }}_preview_container" class="mt-2"
-         style="{{ (product is defined and product.image) ? 'display: block;' : 'display: none;' }}">
+    <div id="{{ form.vars.id }}_preview_container" class="mt-2 d-flex justify-content-center"
+         style="{{ (product is defined and product.image) ? 'display: flex;' : 'display: none;' }}">
         <img id="{{ form.vars.id }}_preview_image"
              src="{{ (product is defined and product.image) ? asset('uploads/imgs/products/' ~ product.image) : '#' }}"
              alt="Image preview"

@@ -7,18 +7,9 @@ body {
     padding: 0;
 }
 
-
-/*
- * ===============================================
- *   BOOTSTRAP 5 NAVBAR HOVER DROPDOWN (Guaranteed)
- * ===============================================
- * This works on desktop screen sizes (lg and up).
- * On smaller screens, it will revert to the default click behavior.
-*/
 @media all and (min-width: 992px) {
-    /* -- MOUSE OVER -- */
     .navbar .nav-item.dropdown:hover .dropdown-menu {
         display: block;
-        margin-top: 0; /* remove the gap so it doesn't close */
+        margin-top: 0;
     }
 }
