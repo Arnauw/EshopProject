@@ -27,6 +27,7 @@ class ProductType extends AbstractType
             ])
             ->add('image', FileType::class, [
                 'label' => 'Product Image (JPEG or PNG file)',
+                'mapped' => false,
                 'required' => false,
                 'data_class' => null,
                 'constraints' => [
