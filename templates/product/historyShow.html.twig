@@ -1,0 +1,58 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}History of {{ product.name }}{% endblock %}
+
+{% block body %}
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-10 col-lg-8">
+
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h1 class="mb-0">History of "{{ product.name }}"</h1>
+                    <a href="{{ path('app_product_index') }}" class="btn btn-primary">
+                        Back to Products
+                    </a>
+                </div>
+
+                {% if product.productHistories is not empty %}
+                    <div class="row text-muted fw-bold d-none d-md-flex mb-2 px-3">
+                        <div class="col-md-2">ID</div>
+                        <div class="col-md-3">Quantity Change</div>
+                        <div class="col-md-7">Date of Change</div>
+                    </div>
+
+                    <div class="list-group shadow-sm">
+                        {% for historyField in product.productHistories %}
+                            <div class="list-group-item">
+                                <div class="row align-items-center">
+
+                                    <div class="col-12 col-md-2 mb-2 mb-md-0">
+                                        <span class="fw-bold">{{ historyField.id }}</span>
+                                    </div>
+
+                                    <div class="col-12 col-md-3 mb-2 mb-md-0">
+                                        {% if historyField.quantity > 0 %}
+                                            <span class="fw-bold text-success">+{{ historyField.quantity }}</span>
+                                        {% else %}
+                                            <span class="fw-bold text-danger">{{ historyField.quantity }}</span>
+                                        {% endif %}
+                                    </div>
+
+                                    <div class="col-12 col-md-7">
+                                        <span class="text-muted">{{ historyField.createdAt|date('F jS, Y - H:i') }}</span>
+                                    </div>
+
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    <div class="alert alert-info mb-0">
+                        There is no stock history for this product yet.
+                    </div>
+                {% endif %}
+
+            </div>
+        </div>
+    </div>
+{% endblock %}

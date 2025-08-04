@@ -29,7 +29,9 @@ final class ProductController extends AbstractController
     public function new(Request $request, EntityManagerInterface $entityManager, SluggerInterface $slugger): Response
     {
         $product = new Product();
-        $form = $this->createForm(ProductType::class, $product);
+        $form = $this->createForm(ProductType::class, $product, [
+            'is_edit-new_form' => true,
+        ]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -77,7 +79,9 @@ final class ProductController extends AbstractController
     #[Route('/{id}/edit', name: 'app_product_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Product $product, EntityManagerInterface $entityManager, SluggerInterface $slugger): Response
     {
-        $form = $this->createForm(ProductType::class, $product);
+        $form = $this->createForm(ProductType::class, $product, [
+            'is_edit-new_form' => true,
+        ]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -112,6 +116,52 @@ final class ProductController extends AbstractController
         return $this->render('product/edit.html.twig', [
             'product' => $product,
             'form' => $form,
+        ]);
+    }
+
+    #[Route('/{id}/addStock', name: 'app_product_addStock', methods: ['GET', 'POST'])]
+    public function addStock(Request $request, Product $product, EntityManagerInterface $entityManager, SluggerInterface $slugger): Response
+    {
+        $oldStock = $product->getStock();
+//        var_dump($oldStock);
+
+        $form = $this->createForm(ProductType::class, $product, [
+            'is_stock_edit_form' => true,
+        ]);
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $newStock = $form->get('stock')->getData() + $oldStock;
+//            var_dump($form->get('stock')->getData());
+            $product->setStock($newStock);
+
+            $entityManager->persist($product);
+            $entityManager->flush();
+
+            $stockHistory = new ProductHistory();
+            $stockHistory->setProduct($product);
+            $stockHistory->setQuantity($product->getStock());
+            $stockHistory->setCreatedAt(new \DateTimeImmutable());
+            $entityManager->persist($stockHistory);
+            $entityManager->flush();
+
+            $this->addFlash('success', 'Product stock add
+            ed successfully!');
+            return $this->redirectToRoute('app_product_index', [], Response::HTTP_SEE_OTHER);
+        }
+
+        return $this->render('product/addStock.html.twig', [
+            'product' => $product,
+            'form' => $form,
+        ]);
+    }
+
+    #[Route('/{id}/history', name: 'app_product_history_show', methods: ['GET'])]
+    public function historyShow(Product $product): Response
+    {
+        return $this->render('product/historyShow.html.twig', [
+            'product' => $product,
         ]);
     }
 

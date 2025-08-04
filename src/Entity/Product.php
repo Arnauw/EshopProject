@@ -34,12 +34,12 @@ class Product
     private ?string $image = null;
 
     #[ORM\Column]
-    private ?int $stock = null;
+    private ?int $stock = 0;
 
     /**
      * @var Collection<int, ProductHistory>
      */
-    #[ORM\OneToMany(targetEntity: ProductHistory::class, mappedBy: 'product')]
+    #[ORM\OneToMany(targetEntity: ProductHistory::class, mappedBy: 'product', orphanRemoval: true)]
     private Collection $productHistories;
 
     public function __construct()
