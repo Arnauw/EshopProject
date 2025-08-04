@@ -60,7 +60,7 @@
                             </li>
                         {% endif %}
 
-                        {% if 'admin_user' not in app.request.pathInfo %}
+                        {% if 'admin/users' not in app.request.pathInfo %}
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle" role="button" aria-expanded="false" href="{{ path('app_user_show') }}">
                                     Users
