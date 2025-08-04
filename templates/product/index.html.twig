@@ -34,7 +34,7 @@
                                             <img src="{{ asset('uploads/imgs/products/' ~ product.image) }}" alt="{{ product.name }}" class="img-fluid rounded border">
                                         {% else %}
                                             <div class="d-flex align-items-center justify-content-center bg-light rounded border" style="height: 60px;">
-                                                <i class="fas fa-image text-muted"></i>
+                                                <img src="{{ asset('imgs/no-image.svg') }}" class="card-img-top" alt="No image available">
                                             </div>
                                         {% endif %}
                                     </div>
