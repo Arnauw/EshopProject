@@ -24,8 +24,8 @@
     {{ form_row(form.image) }}
 
     {% if product is defined and product.image %}
-        <div id="{{ form.vars.id }}_preview_container" class="mt-2 d-flex justify-content-center">
-            <img id="{{ form.vars.id }}_preview_image"
+        <div id="product_preview_container" class="mt-2 d-flex justify-content-center">
+            <img id="product_preview_image"
                  src="{{ asset('uploads/imgs/products/' ~ product.image) }}"
                  alt="Image preview"
                  class="img-fluid rounded border"/>

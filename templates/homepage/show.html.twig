@@ -1,0 +1,53 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ product.name }}{% endblock %}
+
+{% block body %}
+    <div class="container my-5">
+        <div class="row">
+
+            <div class="col-md-6">
+                {% if product.image %}
+                    <img src="{{ asset('uploads/imgs/products/' ~ product.image) }}" alt="{{ product.name }}" class="img-fluid rounded shadow-sm">
+                {% else %}
+                    <img src="{{ asset('imgs/no-image.svg') }}" class="img-fluid rounded shadow-sm" alt="No image available">
+                {% endif %}
+            </div>
+
+            <div class="col-md-6">
+                {% if product.subcategory %}
+                    <span class="badge bg-info text-dark mb-2">{{ product.subcategory.current.name }}</span>
+                {% endif %}
+
+                <h1 class="display-5 fw-bold">{{ product.name }}</h1>
+
+                <p class="fs-3 fw-bold text-success my-3">{{ product.price|number_format(2, ',', ' ') }} €</p>
+
+                <div class="mb-3">
+                    {% if product.stock > 0 %}
+                        <span class="badge bg-success">In Stock</span>
+                    {% else %}
+                        <span class="badge bg-danger">Out of Stock</span>
+                    {% endif %}
+                </div>
+
+                <p class="lead">{{ product.description }}</p>
+
+                <div class="d-grid gap-2 mt-4">
+                    {% if product.stock > 0 %}
+                        <a href="#" class="btn btn-primary btn-lg">
+                            <i class="fas fa-shopping-cart me-2"></i> Add to Cart
+                        </a>
+                    {% else %}
+                        <button class="btn btn-secondary btn-lg" disabled>Out of Stock</button>
+                    {% endif %}
+                </div>
+
+                <hr class="my-4">
+
+                <a href="{{ path('app_homepage') }}">← Back to all products</a>
+            </div>
+
+        </div>
+    </div>
+{% endblock %}

@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Product;
 use App\Repository\ProductRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -15,6 +16,14 @@ final class HomepageController extends AbstractController
     {
         return $this->render('homepage/index.html.twig', [
             'products' => $productRepository->findAll(),
+        ]);
+    }
+
+    #[Route('/product/{id}/show', name: 'app_product_show', methods: ['GET'])]
+    public function show(Product $product): Response
+    {
+        return $this->render('homepage/show.html.twig', [
+            'product' => $product,
         ]);
     }
 }

@@ -23,15 +23,13 @@
 
                     {% if 'admin' in app.request.pathInfo %}
 
-                        {% if 'categories' not in app.request.pathInfo %}
+                        {% if 'product' not in app.request.pathInfo %}
                             <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" href="{{ path('app_category_show') }}" role="button"
-                                   aria-expanded="false">
-                                    Categories
+                                <a class="nav-link dropdown-toggle" role="button" aria-expanded="false" href="{{ path('app_product_index') }}">
+                                    Products
                                 </a>
                                 <ul class="dropdown-menu">
-                                    <li><a class="dropdown-item" href="{{ path('app_category_new') }}">Create new
-                                            category</a></li>
+                                    <li><a class="dropdown-item" href="{{ path('app_product_new') }}">Create new product</a></li>
                                 </ul>
                             </li>
                         {% endif %}
@@ -49,13 +47,15 @@
                             </li>
                         {% endif %}
 
-                        {% if 'product' not in app.request.pathInfo %}
+                        {% if 'categories' not in app.request.pathInfo %}
                             <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" role="button" aria-expanded="false" href="{{ path('app_product_index') }}">
-                                    Products
+                                <a class="nav-link dropdown-toggle" href="{{ path('app_category_show') }}" role="button"
+                                   aria-expanded="false">
+                                    Categories
                                 </a>
                                 <ul class="dropdown-menu">
-                                    <li><a class="dropdown-item" href="{{ path('app_product_new') }}">Create new product</a></li>
+                                    <li><a class="dropdown-item" href="{{ path('app_category_new') }}">Create new
+                                            category</a></li>
                                 </ul>
                             </li>
                         {% endif %}
