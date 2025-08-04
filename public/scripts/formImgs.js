@@ -1,25 +1,44 @@
 console.log('formImgs.js loaded');
-function renderImagesBeforeUpload() {
-    // Dynamically get the exact ID of the file input from Twig.
-    const imageInputId = 'product_image';
-    const imageInput = document.getElementById(imageInputId);
 
-    // If for some reason the input doesn't exist, stop right here.
+function renderImagesBeforeUpload() {
+    const imageInput = document.getElementById('product_image');
+
     if (!imageInput) { return; }
 
-    // Get the preview elements using their dynamic IDs.
-    const previewContainer = document.getElementById('product_preview_container');
-    const previewImage = document.getElementById('product_preview_image');
+    const inputWrapper = imageInput.closest('.mb-3');
+    if (!inputWrapper) { return; }
 
-    // Attach the event listener.
     imageInput.addEventListener('change', function(event) {
         const file = event.target.files[0];
         if (file) {
             const reader = new FileReader();
+
             reader.onload = function(e) {
+
+                let previewImage = document.getElementById('product_preview_image');
+
+                if (!previewImage) {
+                    console.log('No preview found. Creating a new one.');
+
+                    const newPreviewContainer = document.createElement('div');
+                    newPreviewContainer.id = 'product_preview_container';
+                    newPreviewContainer.className = 'mt-2 d-flex justify-content-center';
+
+                    const newPreviewImage = document.createElement('img');
+                    newPreviewImage.id = 'product_preview_image';
+                    newPreviewImage.className = 'img-fluid rounded border';
+                    newPreviewImage.alt = 'Image preview';
+
+                    newPreviewContainer.appendChild(newPreviewImage);
+                    inputWrapper.appendChild(newPreviewContainer);
+
+                    previewImage = newPreviewImage;
+                }
+
                 previewImage.src = e.target.result;
-                previewContainer.style.display = 'block';
+                previewImage.parentElement.style.display = 'flex';
             };
+
             reader.readAsDataURL(file);
         }
     });

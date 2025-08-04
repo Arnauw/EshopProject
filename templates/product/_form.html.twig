@@ -23,13 +23,15 @@
 <div class="mb-3">
     {{ form_row(form.image) }}
 
-    <div id="{{ form.vars.id }}_preview_container" class="mt-2 d-flex justify-content-center"
-         style="{{ (product is defined and product.image) ? 'display: flex;' : 'display: none;' }}">
-        <img id="{{ form.vars.id }}_preview_image"
-             src="{{ (product is defined and product.image) ? asset('uploads/imgs/products/' ~ product.image) : '#' }}"
-             alt="Image preview"
-             class="img-fluid rounded border"/>
-    </div>
+    {% if product is defined and product.image %}
+        <div id="{{ form.vars.id }}_preview_container" class="mt-2 d-flex justify-content-center">
+            <img id="{{ form.vars.id }}_preview_image"
+                 src="{{ asset('uploads/imgs/products/' ~ product.image) }}"
+                 alt="Image preview"
+                 class="img-fluid rounded border"/>
+        </div>
+    {% endif %}
+
 </div>
 
 <div class="d-grid">
