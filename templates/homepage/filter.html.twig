@@ -8,7 +8,7 @@
             <div class="col-md-12">
 
                 <div class="text-center mb-5">
-                    <h1 class="display-4">Our Products</h1>
+                    <h1 class="display-4">{{ subcategory.name }}</h1>
                 </div>
 
                 {% if products is not empty %}
@@ -56,7 +56,7 @@
                         Nous n'avons aucun produit disponible pour le moment. Veuillez revenir plus tard !
                     </div>
                 {% endif %}
-
+                {{ knp_pagination_render(products, 'layouts/_pagination.html.twig') }}
             </div>
         </div>
     </div>

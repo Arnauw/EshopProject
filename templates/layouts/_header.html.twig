@@ -21,12 +21,13 @@
                         </li>
                     {% endif %}
 
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" role="button" aria-expanded="false" href="">
-                            Categories
-                        </a>
-                        <ul class="dropdown-menu">
-                            {% if categories is defined and categories is not empty %}
+                    {% if categories is defined and categories is not empty %}
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" role="button" aria-expanded="false" href="">
+                                Categories
+                            </a>
+                            <ul class="dropdown-menu">
+
                                 {% for category in categories %}
                                     <li><a class="dropdown-item fw-bold" href="">{{ category.name }}</a></li>
                                     {% for subcategory in category.subcategories %}
@@ -38,9 +39,10 @@
                                         <li class="dropdown-divider"></li>
                                     {% endif %}
                                 {% endfor %}
-                            {% endif %}
-                        </ul>
-                    </li>
+
+                            </ul>
+                        </li>
+                    {% endif %}
 
                     {% if 'admin' in app.request.pathInfo %}
 
