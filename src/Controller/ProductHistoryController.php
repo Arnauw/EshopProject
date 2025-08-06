@@ -45,7 +45,7 @@ final class ProductHistoryController extends AbstractController
 //    #[Route('/{id}', name: 'app_product_history_show', methods: ['GET'])]
 //    public function show(ProductHistory $productHistory): Response
 //    {
-//        return $this->render('product_history/show.html.twig', [
+//        return $this->render('product_history/order_message.html.twig', [
 //            'product_history' => $productHistory,
 //        ]);
 //    }

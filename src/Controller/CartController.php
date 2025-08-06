@@ -25,9 +25,7 @@ final class CartController extends AbstractController
 
 //        dd($cart);
 
-        // Boucle sur les éléments du panier pour récupérer les informations de produit
         foreach ($cart as $id => $quantity) {
-            // Récupère le produit correspondant à l'id et la quantité
             $cartWithData[] = [
                 'product' => $this->productRepository->find($id),
                 'quantity' => $quantity,
