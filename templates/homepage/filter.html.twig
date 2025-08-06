@@ -39,7 +39,7 @@
                                                 €</p>
 
                                             {% if product.stock > 0 %}
-                                                <a href="#" class="btn btn-outline-success w-100">Add to cart</a>
+                                                <a href="{{ path('app_cart_add_product', {'id': product.id}) }}" class="btn btn-outline-success w-100">Add to cart</a>
                                             {% else %}
                                                 <button type="button" class="btn btn-outline-danger w-100" disabled>
                                                     Out of stock
@@ -53,7 +53,7 @@
                     </div>
                 {% else %}
                     <div class="alert alert-info mt-4">
-                        Nous n'avons aucun produit disponible pour le moment. Veuillez revenir plus tard !
+                        There is no product available at the moment. Please come back later!
                     </div>
                 {% endif %}
                 {{ knp_pagination_render(products, 'layouts/_pagination.html.twig') }}

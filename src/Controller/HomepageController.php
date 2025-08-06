@@ -55,15 +55,4 @@ final class HomepageController extends AbstractController
         ]);
     }
 
-    #[Route('/product/{id}/addToCart', name: 'app_product_addToCart', methods: ['GET'])]
-    public function addToCart(Product $product, ProductRepository $productRepository): Response
-    {
-
-        $lastProductsAdded = $productRepository->findBy([], ['id' => 'DESC'], 5);
-
-
-        return $this->render('homepage/show.html.twig', [
-            'product' => $product,
-        ]);
-    }
 }

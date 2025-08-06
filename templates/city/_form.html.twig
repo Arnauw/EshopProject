@@ -1,0 +1,13 @@
+{{ form_start(form) }}
+<div class="mb-3">
+    {{ form_row(form.name) }}
+</div>
+
+<div class="mb-3">
+    {{ form_row(form.shippingCost) }}
+</div>
+
+<div class="d-grid">
+    <button class="btn btn-primary btn-lg">{{ button_label|default('Save') }}</button>
+</div>
+{{ form_end(form) }}

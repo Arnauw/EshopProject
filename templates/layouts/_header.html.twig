@@ -86,6 +86,20 @@
                             </li>
                         {% endif %}
 
+                        {% if 'city' not in app.request.pathInfo %}
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" role="button" aria-expanded="false"
+                                   href="{{ path('app_city_index') }}">
+                                    Cities
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li><a class="dropdown-item" href="{{ path('app_city_new') }}">Create new city</a>
+                                    </li>
+                                </ul>
+                            </li>
+
+                        {% endif %}
+
                         {% if 'admin/users' not in app.request.pathInfo %}
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle" role="button" aria-expanded="false"

@@ -35,7 +35,7 @@
 
                 <div class="d-grid gap-2 mt-4">
                     {% if product.stock > 0 %}
-                        <a href="#" class="btn btn-primary btn-lg">
+                        <a href="{{ path('app_cart_add_product', {'id': product.id}) }}" class="btn btn-primary btn-lg">
                             <i class="fas fa-shopping-cart me-2"></i> Add to Cart
                         </a>
                     {% else %}

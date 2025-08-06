@@ -1,20 +1,69 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello CartController!{% endblock %}
+{% block title %}Votre Panier{% endblock %}
 
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-12 col-lg-10">
 
-<div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
+                <h1 class="mb-4">Cart</h1>
 
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code>/mnt/Games/git-folders/Arnauw/EshopProject_old/src/Controller/CartController.php</code></li>
-        <li>Your template at <code>/mnt/Games/git-folders/Arnauw/EshopProject_old/templates/cart/index.html.twig</code></li>
-    </ul>
-</div>
+                {% if items is not empty %}
+                    <div class="list-group shadow-sm">
+                        <div class="list-group-item bg-light d-none d-md-block">
+                            <div class="row text-muted fw-bold align-items-center">
+                                <div class="col-md-4">Product</div>
+                                <div class="col-md-2">Price</div>
+                                <div class="col-md-2">Quantity</div>
+                                <div class="col-md-2">Total Price</div>
+                                <div class="col-md-2 text-end">Action</div>
+                            </div>
+                        </div>
+
+                        {% for item in items %}
+                            <div class="list-group-item">
+                                <div class="row align-items-center">
+                                    <div class="col-12 col-md-4 mb-2 mb-md-0">
+                                        <span class="fw-bold">{{ item.product.name }}</span>
+                                    </div>
+                                    <div class="col-6 col-md-2">
+                                        {{ item.product.price|number_format(2, ',', ' ') }} €
+                                    </div>
+                                    <div class="col-6 col-md-2">
+                                        {{ item.quantity }}
+                                    </div>
+                                    <div class="col-6 col-md-2">
+                                        <span class="fw-bold">{{ (item.product.price * item.quantity)|number_format(2, ',', ' ') }} €</span>
+                                    </div>
+                                    <div class="col-6 col-md-2 text-md-end">
+                                        <a href="{{ path('app_cart_remove_product',{'id':item.product.id }) }}" class="text-danger">
+                                            Delete
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+
+                    <div class="d-flex justify-content-between align-items-center mt-4">
+                        <div>
+                            <h2 class="fw-bold mb-0">Total: {{ total|number_format(2, ',', ' ') }} €</h2>
+                        </div>
+                        <div>
+                            <a href="{{ path('app_cart_remove')}}" class="btn btn-outline-danger">Delete the cart</a>
+                            <a data-turbo='false' href="{#{{ path('app_order')}}#}" class="btn btn-primary ms-2">Confirm your order</a>
+                        </div>
+                    </div>
+
+                {% else %}
+                    <div class="alert alert-info mt-4">
+                        <p class="mb-0">Your cart is empty</p>
+                    </div>
+                    <a href="{{ path('app_homepage') }}" class="btn btn-light">Back to homepage</a>
+                {% endif %}
+
+            </div>
+        </div>
+    </div>
 {% endblock %}
