@@ -8,6 +8,7 @@ use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use function Sodium\add;
 
 class OrderType extends AbstractType
 {
@@ -21,6 +22,9 @@ class OrderType extends AbstractType
             ->add('city', EntityType::class, [
                 'class' => City::class,
                 'choice_label' => 'name',
+            ])
+            ->add('isPayingOnDelivery', null, [
+                'label' => 'Pay on delivery',
             ])
         ;
     }

@@ -118,11 +118,19 @@
                 </ul>
 
                 <div class="navbar-nav ms-auto">
+
+                    <div class="nav-item mt-1">
+                            <a href="{{ path('app_cart') }}" class="navbar-text me-3">
+                                Cart
+                            </a>
+                    </div>
+
+
                     {% if app.user %}
                         <div class="nav-item mt-1">
-                <span class="navbar-text me-3">
-                  Welcome, {{ app.user.firstName|default(app.user.userIdentifier) }}!
-                </span>
+                            <span class="navbar-text me-3">
+                                Welcome, {{ app.user.firstName|default(app.user.userIdentifier) }}!
+                            </span>
                         </div>
 
                         <div class="nav-item">
