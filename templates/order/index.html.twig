@@ -70,13 +70,13 @@
             // Si citySelector existe :
             if (citySelector) {
                 const cityValue = citySelector.value;
-                const url = `https://127.0.0.1:8000/order/city/${cityValue}/shipping/cost`;
+                const url = `/order/city/${cityValue}/shipping/cost`;
 
                 ajaxRequest(url);
 
                 // Écouteur sur le changement de ville
                 citySelector.addEventListener('change', function () {
-                    const urlUpdate = `https://127.0.0.1:8000/order/city/${this.value}/shipping/cost`;
+                    const urlUpdate = `/order/city/${this.value}/shipping/cost`;
                     ajaxRequest(urlUpdate);
                 });
             }
@@ -96,7 +96,7 @@
 {#                // Récupère la valeur actuelle de l'élément citySelector (c'est-à-dire la valeur sélectionnée dans la liste déroulante)#}
 {#                const cityValue = citySelector.val();#}
 {#                // Construit l'URL de la requête AJAX en fonction de la valeur de la ville sélectionnée#}
-{#                const url = `https://127.0.0.1:8000/order/city/${cityValue}/shipping/cost`;#}
+{#                const url = `/order/city/${cityValue}/shipping/cost`;#}
 
 {#                // Définition d'une fonction nommée ajaxRequest qui prend en paramètre une URL#}
 {#                function ajaxRequest(url) {#}
@@ -139,7 +139,7 @@
 {#                ajaxRequest(url)#}
 
 {#                citySelector.on('change',function() {#}
-{#                    const urlUpdate = `https://127.0.0.1:8000/order/city/${$(this).val()}/shipping/cost`;#}
+{#                    const urlUpdate = `/order/city/${$(this).val()}/shipping/cost`;#}
 {#                    //alert(urlUpdate)#}
 {#                    ajaxRequest(urlUpdate)#}
 {#                })#}

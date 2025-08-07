@@ -16,11 +16,14 @@ use Symfony\Component\Routing\Attribute\Route;
 final class HomepageController extends AbstractController
 {
     #[Route('/', name: 'app_homepage')]
-    public function index(ProductRepository $productRepository, CategoryRepository $categoryRepository, Request $request, PaginatorInterface $paginator): Response
+    public function index(ProductRepository $productRepository,
+                          CategoryRepository $categoryRepository,
+                          Request $request,
+                          PaginatorInterface $paginator): Response
     {
         $data = $productRepository->findby([], ['id' => "DESC"]);
 
-        $products = $paginator->paginate($data, $request->query->getInt('page', 1), 8);
+        $products = $paginator->paginate($data, $request->query->getInt('page', 1), 8,);
 
         return $this->render('homepage/index.html.twig', [
             'products' => $products,
