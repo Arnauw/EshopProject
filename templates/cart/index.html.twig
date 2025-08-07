@@ -51,7 +51,7 @@
                             <h2 class="fw-bold mb-0">Total: {{ total|number_format(2, ',', ' ') }} €</h2>
                         </div>
                         <div>
-                            <a href="{{ path('app_cart_remove')}}" class="btn btn-outline-danger">Delete the cart</a>
+                            <a href="{{ path('app_cart_remove')}}" class="btn btn-danger">Delete the cart</a>
                             <a data-turbo='false' href="{{ path('app_order')}}" class="btn btn-primary ms-2">Confirm your order</a>
                         </div>
                     </div>
