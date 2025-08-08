@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Repository\ProductRepository;
+use App\Service\Cart;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
@@ -17,33 +18,42 @@ final class CartController extends AbstractController
     }
 
     #[Route('/cart', name: 'app_cart', methods: ['GET'])]
-    public function cart(SessionInterface $session): Response
+    public function cart(SessionInterface $session, Cart $cart): Response
     {
-        $cart = $session->get('cart', []);
 
-        $cartWithData = [];
+//        OLD VERSION BEFORE CART SERVICE
+////        $cart = $session->get('cart', []);
+//
+//        $cartWithData = [];
+//
+////        dd($cart);
+//
+//        foreach ($cart as $id => $quantity) {
+//            $cartWithData[] = [
+//                'product' => $this->productRepository->find($id),
+//                'quantity' => $quantity,
+//            ];
+//        }
+//
+//        $total = array_sum(
+//            array_map(function ($item) {
+//                return $item['product']->getPrice() * $item['quantity'];
+//            }, $cartWithData)
+//        );
+//
+////        dd($total);
+////        dd($cartWithData);
+//
+//        return $this->render('cart/index.html.twig', [
+//            'items' => $cartWithData, // on retourne ces deux variables afin de les récupérer dans la vue
+//            'total' => $total,
+//        ]);
 
-//        dd($cart);
-
-        foreach ($cart as $id => $quantity) {
-            $cartWithData[] = [
-                'product' => $this->productRepository->find($id),
-                'quantity' => $quantity,
-            ];
-        }
-
-        $total = array_sum(
-            array_map(function ($item) {
-                return $item['product']->getPrice() * $item['quantity'];
-            }, $cartWithData)
-        );
-
-//        dd($total);
-//        dd($cartWithData);
+        $data = $cart->getCart($session);
 
         return $this->render('cart/index.html.twig', [
-            'items' => $cartWithData, // on retourne ces deux variables afin de les récupérer dans la vue
-            'total' => $total,
+            'items'=>$data['cart'],
+            'total'=>$data['total']
         ]);
     }
 
