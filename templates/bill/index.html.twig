@@ -1,88 +1,124 @@
-{#{% extends 'base.html.twig' %}#}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Invoice #{{ order.id }}</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            font-size: 12px;
+            color: #333;
+        }
 
-{#{% block title %}Bill #{{ order.id }}{% endblock %}#}
+        .container {
+            width: 100%;
+            margin: 0 20px;
+        }
 
-{#{% block body %}#}
-{#    <div class="container my-5">#}
-{#        <div class="row justify-content-center">#}
-{#            <div class="col-md-10 col-lg-8">#}
+        .header, .footer {
+            text-align: center;
+        }
 
-{#                <div class="card shadow-sm border-0">#}
-{#                    #}{# --- CARD HEADER --- #}
-{#                    <div class="card-header bg-light p-4">#}
-{#                        <div class="d-flex justify-content-between align-items-center">#}
-{#                            <div>#}
-{#                                <h1 class="h2 mb-0">Facture</h1>#}
-{#                                <span class="text-muted">Order Date: {{ order.createdAt|date('F jS, Y') }}</span>#}
-{#                            </div>#}
-{#                            <div class="text-end">#}
-{#                                <span class="text-muted">Invoice #</span>#}
-{#                                <h2 class="h3 mb-0">{{ order.id }}</h2>#}
-{#                            </div>#}
-{#                        </div>#}
-{#                    </div>#}
+        .details-section {
+            margin-top: 30px;
+            margin-bottom: 30px;
+        }
 
-{#                    #}{# --- CARD BODY (CLIENT INFO & ITEMS) --- #}
-{#                    <div class="card-body p-4">#}
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
 
-{#                        #}{# Client Information #}
-{#                        <h5 class="mb-3">Billed To:</h5>#}
-{#                        <p class="mb-0 fw-bold">{{ order.firstName }} {{ order.lastName }}</p>#}
-{#                        <p class="mb-0">{{ order.address }}, {{ order.city.name }}</p>#}
-{#                        <p class="mb-0">{{ order.phoneNumber }}</p>#}
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
 
-{#                        <hr class="my-4">#}
+        th {
+            background-color: #f2f2f2;
+        }
 
-{#                        #}{# "Fake Table" for Order Items #}
-{#                        <div class="row text-muted fw-bold d-none d-md-flex mb-2">#}
-{#                            <div class="col-md-6">Product</div>#}
-{#                            <div class="col-md-2 text-center">Quantity</div>#}
-{#                            <div class="col-md-2 text-end">Unit Price</div>#}
-{#                            <div class="col-md-2 text-end">Total</div>#}
-{#                        </div>#}
+        .totals-table {
+            width: 50%;
+            margin-left: auto;
+            margin-top: 20px;
+        }
 
-{#                        <div class="list-group list-group-flush">#}
-{#                            {% for orderProduct in order.orderProducts %}#}
-{#                                <div class="list-group-item py-3">#}
-{#                                    <div class="row align-items-center">#}
-{#                                        <div class="col-md-6">#}
-{#                                            <span class="fw-bold">{{ orderProduct.product.name }}</span>#}
-{#                                            <small class="d-block text-muted">{{ orderProduct.product.description|slice(0, 50) }}...</small>#}
-{#                                        </div>#}
-{#                                        <div class="col-md-2 text-center">{{ orderProduct.quantity }}</div>#}
-{#                                        <div class="col-md-2 text-end">{{ orderProduct.product.price|number_format(2, ',', ' ') }} €</div>#}
-{#                                        <div class="col-md-2 text-end fw-bold">{{ (orderProduct.product.price * orderProduct.quantity)|number_format(2, ',', ' ') }} €</div>#}
-{#                                    </div>#}
-{#                                </div>#}
-{#                            {% endfor %}#}
-{#                        </div>#}
+        .totals-table td {
+            border: 1px solid #ddd;
+            padding: 8px;
+        }
 
-{#                        #}{# Totals Section #}
-{#                        <hr class="my-4">#}
-{#                        <div class="row">#}
-{#                            <div class="col-md-7"></div> #}{# Spacer column #}
-{#                            <div class="col-md-5">#}
-{#                                <div class="list-group list-group-flush">#}
-{#                                    <div class="list-group-item d-flex justify-content-between">#}
-{#                                        <span class="text-muted">Shipping Cost:</span>#}
-{#                                        <span>{{ order.city.shippingCost|number_format(2, ',', ' ') }} €</span>#}
-{#                                    </div>#}
-{#                                    <div class="list-group-item d-flex justify-content-between bg-light">#}
-{#                                        <span class="fw-bold">Total to Pay:</span>#}
-{#                                        <span class="fw-bold h5 mb-0">{{ order.totalPrice|number_format(2, ',', ' ') }} €</span>#}
-{#                                    </div>#}
-{#                                </div>#}
-{#                            </div>#}
-{#                        </div>#}
+        .text-end {
+            text-align: right;
+        }
 
-{#                    </div>#}
-{#                    #}{# --- CARD FOOTER --- #}
-{#                    <div class="card-footer text-center text-muted">#}
-{#                        <p class="mb-0">Thank you for your business!</p>#}
-{#                    </div>#}
-{#                </div>#}
+        .fw-bold {
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
 
-{#            </div>#}
-{#        </div>#}
-{#    </div>#}
-{#{% endblock %}#}
+    <div class="header">
+        <h1>Facture</h1>
+        <p><strong>Invoice #:</strong> {{ order.id }}</p>
+        <p><strong>Order Date:</strong> {{ order.createdAt|date('F jS, Y') }}</p>
+    </div>
+
+    <hr>
+
+    <div class="details-section">
+        <h4 style="margin-bottom: 5px;">Billed To:</h4>
+        <p style="margin: 0;">{{ order.firstName }} {{ order.lastName }}</p>
+        <p style="margin: 0;">{{ order.address }}, {{ order.city.name }}</p>
+        <p style="margin: 0;">{{ order.phoneNumber }}</p>
+    </div>
+
+    <h4>Order Details</h4>
+    <table>
+        <thead>
+        <tr>
+            <th>Product</th>
+            <th class="text-end">Quantity</th>
+            <th class="text-end">Unit Price</th>
+            <th class="text-end">Total</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for orderProduct in order.orderProducts %}
+            <tr>
+                <td>{{ orderProduct.product.name }}</td>
+                <td class="text-end">{{ orderProduct.quantity }}</td>
+                <td class="text-end">{{ orderProduct.product.price|number_format(2, ',', ' ') }} €</td>
+                <td class="text-end">{{ (orderProduct.product.price * orderProduct.quantity)|number_format(2, ',', ' ') }}
+                    €
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <table class="totals-table">
+        <tbody>
+        <tr>
+            <td>Shipping Cost:</td>
+            <td class="text-end">{{ order.city.shippingCost|number_format(2, ',', ' ') }} €</td>
+        </tr>
+        <tr>
+            <td class="fw-bold">Total to Pay:</td>
+            <td class="text-end fw-bold">{{ order.totalPrice|number_format(2, ',', ' ') }} €</td>
+        </tr>
+        </tbody>
+    </table>
+
+    <div class="footer" style="margin-top: 50px;">
+        <p>Thank you for your business!</p>
+    </div>
+
+</div>
+</body>
+</html>
