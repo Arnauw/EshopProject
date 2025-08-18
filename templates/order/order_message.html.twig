@@ -1,44 +1,75 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Order{% endblock %}
+{% block title %}Order #{{ order.id }}{% endblock %}
 
 {% block body %}
-    <h1>Order</h1>
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-10 col-lg-8">
 
+                <div class="alert alert-success text-center mb-4" role="alert">
+                    <h4 class="alert-heading">Order Confirmed!</h4>
+                    <p class="mb-0">Thank you for your purchase. Here are the details of your order.</p>
+                </div>
 
+                <div class="card shadow-sm">
+                    <div class="card-header bg-light">
+                        <h1 class="h3 mb-0">Order Details</h1>
+                    </div>
+                    <div class="card-body">
+                        {# The List Group acts as our "Fake" Table Body #}
+                        <div class="list-group list-group-flush">
 
-    <table class="table">
-        <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ order.id }}</td>
-            </tr>
-            <tr>
-                <th>FirstName</th>
-                <td>{{ order.firstName }}</td>
-            </tr>
-            <tr>
-                <th>LastName</th>
-                <td>{{ order.lastName }}</td>
-            </tr>
-            <tr>
-                <th>PhoneNumber</th>
-                <td>{{ order.phoneNumber }}</td>
-            </tr>
-            <tr>
-                <th>Address</th>
-                <td>{{ order.address }}</td>
-            </tr>
-            <tr>
-                <th>CreatedAt</th>
-                <td>{{ order.createdAt ? order.createdAt|date('Y-m-d H:i:s') : '' }}</td>
-            </tr>
-        </tbody>
-    </table>
+                            <div class="list-group-item">
+                                <div class="row">
+                                    <div class="col-md-4 fw-bold">Order ID:</div>
+                                    <div class="col-md-8">{{ order.id }}</div>
+                                </div>
+                            </div>
 
-    <a href="{{ path('app_order') }}">back to list</a>
+                            <div class="list-group-item">
+                                <div class="row">
+                                    <div class="col-md-4 fw-bold">First Name:</div>
+                                    <div class="col-md-8">{{ order.firstName }}</div>
+                                </div>
+                            </div>
 
-{#    <a href="{{ path('app_order_edit', {'id': order.id}) }}">edit</a>#}
+                            <div class="list-group-item">
+                                <div class="row">
+                                    <div class="col-md-4 fw-bold">Last Name:</div>
+                                    <div class="col-md-8">{{ order.lastName }}</div>
+                                </div>
+                            </div>
 
-{#    {{ include('order/_delete_form.html.twig') }}#}
+                            <div class="list-group-item">
+                                <div class="row">
+                                    <div class="col-md-4 fw-bold">Phone Number:</div>
+                                    <div class="col-md-8">{{ order.phoneNumber }}</div>
+                                </div>
+                            </div>
+
+                            <div class="list-group-item">
+                                <div class="row">
+                                    <div class="col-md-4 fw-bold">Address:</div>
+                                    <div class="col-md-8">{{ order.address }}</div>
+                                </div>
+                            </div>
+
+                            <div class="list-group-item">
+                                <div class="row">
+                                    <div class="col-md-4 fw-bold">Date of Order:</div>
+                                    <div class="col-md-8">{{ order.createdAt ? order.createdAt|date('F jS, Y \a\t H:i') : '' }}</div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="card-footer text-center">
+                        <a href="{{ path('app_homepage') }}">← Back to Homepage</a>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
 {% endblock %}

@@ -5,21 +5,22 @@ namespace App\Controller;
 use App\Entity\City;
 use App\Entity\Order;
 use App\Entity\OrderProduct;
+use App\Entity\User;
 use App\Form\OrderType;
 use App\Repository\OrderRepository;
 use App\Repository\ProductRepository;
 use App\Service\Cart;
 use Doctrine\ORM\EntityManagerInterface;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Attribute\Route;
 
-#[Route('/order')]
 final class OrderController extends AbstractController
 {
-    #[Route(name: 'app_order', methods: ['GET', 'POST'])]
+    #[Route('/order', name: 'app_order', methods: ['GET', 'POST'])]
     public function index(
         Request                $request,
         SessionInterface       $session,
@@ -140,7 +141,7 @@ final class OrderController extends AbstractController
 
     }
 
-    #[Route('/order_message', name: 'app_order_message')]
+    #[Route('/order/order_message', name: 'app_order_message')]
     public function orderMessage(): Response
     {
         return $this->render('order/order_message.html.twig');
@@ -160,13 +161,13 @@ final class OrderController extends AbstractController
             return $this->redirectToRoute('app_order', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->render('order/order.html.twig', [
+        return $this->render('orders.html.twig', [
             'order' => $order,
             'form' => $form,
         ]);
     }
 
-    #[Route('/city/{id}/shipping/cost', name: 'app_city_shipping_cost')]
+    #[Route('/order/city/{id}/shipping/cost', name: 'app_city_shipping_cost')]
     public function cityShippingCost(City $city): Response
     {
         $cityShippingPrice = $city->getShippingCost();
@@ -174,15 +175,27 @@ final class OrderController extends AbstractController
         return new Response(json_encode(['status' => 200, "message" => 'on', 'content' => $cityShippingPrice]));
     }
 
-//    #[Route('/{id}', name: 'app_order_show', methods: ['GET'])]
-//    public function show(Order $order): Response
-//    {
-//        return $this->render('order/order_message.html.twig', [
-//            'order' => $order,
-//        ]);
-//    }
+    #[Route('admin/order/orders', name: 'app_order_list', methods: ['GET'])]
+    public function orderList(OrderRepository $orderRepo, PaginatorInterface $paginator, Request $request): Response
+    {
+        $data = $orderRepo->findAll();
 
-//    #[Route('/{id}/edit', name: 'app_order_edit', methods: ['GET', 'POST'])]
+        $orders = $paginator->paginate($data, $request->query->getInt('page', 1), 2);
+
+        return $this->render('order/orders.html.twig', [
+            'orders' => $orders,
+        ]);
+    }
+
+    #[Route('/order/{id}', name: 'app_order_show', methods: ['GET'])]
+    public function show(Order $order): Response
+    {
+        return $this->render('order/order_message.html.twig', [
+            'order' => $order,
+        ]);
+    }
+
+//    #[Route('/order/{id}/edit', name: 'app_order_edit', methods: ['GET', 'POST'])]
 //    public function edit(Request $request, Order $order, EntityManagerInterface $entityManager): Response
 //    {
 //        $form = $this->createForm(OrderType::class, $order);
@@ -200,7 +213,7 @@ final class OrderController extends AbstractController
 //        ]);
 //    }
 
-//    #[Route('/{id}', name: 'app_order_delete', methods: ['POST'])]
+//    #[Route('/order/{id}', name: 'app_order_delete', methods: ['POST'])]
 //    public function delete(Request $request, Order $order, EntityManagerInterface $entityManager): Response
 //    {
 //        if ($this->isCsrfTokenValid('delete'.$order->getId(), $request->getPayload()->getString('_token'))) {
