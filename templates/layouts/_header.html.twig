@@ -111,7 +111,19 @@
                                     </li>
                                 </ul>
                             </li>
+                        {% endif %}
 
+                        {% if 'admin/orders' not in app.request.pathInfo %}
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" role="button" aria-expanded="false"
+                                   href="{{ path('app_order_list') }}">
+                                    Orders
+                                </a>
+{#                                <ul class="dropdown-menu">#}
+{#                                    <li><a class="dropdown-item" href="{{ path('app_user_new') }}">Create new user</a>#}
+{#                                    </li>#}
+{#                                </ul>#}
+                            </li>
                         {% endif %}
                     {% endif %}
 
