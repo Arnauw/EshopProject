@@ -42,7 +42,7 @@ final class ProductController extends AbstractController
                 $originalFilename = pathinfo($image->getClientOriginalName(), PATHINFO_FILENAME);
                 $safeFilename = $slugger->slug($originalFilename);
                 $newFilename = $safeFilename.'-'.uniqid('', true).'.'.$image->guessExtension();
-
+                // TODO: Reencode the image to webp and compress. Also add image description. (for alt tag)
                 try {
                     $image->move(
                         $this->getParameter('product_images_directory'),

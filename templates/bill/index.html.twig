@@ -1,0 +1,88 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Bill #{{ order.id }}{% endblock %}
+
+{% block body %}
+    <div class="container my-5">
+        <div class="row justify-content-center">
+            <div class="col-md-10 col-lg-8">
+
+                <div class="card shadow-sm border-0">
+                    {# --- CARD HEADER --- #}
+                    <div class="card-header bg-light p-4">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <h1 class="h2 mb-0">Facture</h1>
+                                <span class="text-muted">Order Date: {{ order.createdAt|date('F jS, Y') }}</span>
+                            </div>
+                            <div class="text-end">
+                                <span class="text-muted">Invoice #</span>
+                                <h2 class="h3 mb-0">{{ order.id }}</h2>
+                            </div>
+                        </div>
+                    </div>
+
+                    {# --- CARD BODY (CLIENT INFO & ITEMS) --- #}
+                    <div class="card-body p-4">
+
+                        {# Client Information #}
+                        <h5 class="mb-3">Billed To:</h5>
+                        <p class="mb-0 fw-bold">{{ order.firstName }} {{ order.lastName }}</p>
+                        <p class="mb-0">{{ order.address }}, {{ order.city.name }}</p>
+                        <p class="mb-0">{{ order.phoneNumber }}</p>
+
+                        <hr class="my-4">
+
+                        {# "Fake Table" for Order Items #}
+                        <div class="row text-muted fw-bold d-none d-md-flex mb-2">
+                            <div class="col-md-6">Product</div>
+                            <div class="col-md-2 text-center">Quantity</div>
+                            <div class="col-md-2 text-end">Unit Price</div>
+                            <div class="col-md-2 text-end">Total</div>
+                        </div>
+
+                        <div class="list-group list-group-flush">
+                            {% for orderProduct in order.orderProducts %}
+                                <div class="list-group-item py-3">
+                                    <div class="row align-items-center">
+                                        <div class="col-md-6">
+                                            <span class="fw-bold">{{ orderProduct.product.name }}</span>
+                                            <small class="d-block text-muted">{{ orderProduct.product.description|slice(0, 50) }}...</small>
+                                        </div>
+                                        <div class="col-md-2 text-center">{{ orderProduct.quantity }}</div>
+                                        <div class="col-md-2 text-end">{{ orderProduct.product.price|number_format(2, ',', ' ') }} €</div>
+                                        <div class="col-md-2 text-end fw-bold">{{ (orderProduct.product.price * orderProduct.quantity)|number_format(2, ',', ' ') }} €</div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+
+                        {# Totals Section #}
+                        <hr class="my-4">
+                        <div class="row">
+                            <div class="col-md-7"></div> {# Spacer column #}
+                            <div class="col-md-5">
+                                <div class="list-group list-group-flush">
+                                    <div class="list-group-item d-flex justify-content-between">
+                                        <span class="text-muted">Shipping Cost:</span>
+                                        <span>{{ order.city.shippingCost|number_format(2, ',', ' ') }} €</span>
+                                    </div>
+                                    <div class="list-group-item d-flex justify-content-between bg-light">
+                                        <span class="fw-bold">Total to Pay:</span>
+                                        <span class="fw-bold h5 mb-0">{{ order.totalPrice|number_format(2, ',', ' ') }} €</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    {# --- CARD FOOTER --- #}
+                    <div class="card-footer text-center text-muted">
+                        <p class="mb-0">Thank you for your business!</p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+{% endblock %}

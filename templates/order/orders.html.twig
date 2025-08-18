@@ -14,22 +14,22 @@
                         {% for order in orders %}
                             <div class="accordion-item shadow-sm mb-3">
 
-                                <h2 class="accordion-header" id="heading-{{ order.id }}">
+                                <div class="accordion-header" id="heading-{{ order.id }}">
                                     <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-{{ order.id }}" aria-expanded="false" aria-controls="collapse-{{ order.id }}">
                                         <div class="w-100 d-flex justify-content-between pe-3">
                                             <span class="fw-bold">Order #{{ order.id }}</span>
                                             <span class="text-muted">{{ order.firstName }} {{ order.lastName }}</span>
-                                            <span>{{ order.createdAt|date('F jS, Y') }}</span>
+                                            <span>{{ order.createdAt|date('F jS, Y H:i') }}</span>
                                             <span>
-{#                                                {% if order.isCompleted %}#}
-{#                                                    <span class="badge bg-success">Delivered</span>#}
-{#                                                {% else %}#}
-{#                                                    <span class="badge bg-warning text-dark">Pending</span>#}
-{#                                                {% endif %}#}
+                                                {% if order.isCompleted %}
+                                                    <span class="badge bg-success">Delivered</span>
+                                                {% else %}
+                                                    <span class="badge bg-warning text-dark">Pending</span>
+                                                {% endif %}
                                             </span>
                                         </div>
                                     </button>
-                                </h2>
+                                </div>
 
                                 <div id="collapse-{{ order.id }}" class="accordion-collapse collapse" aria-labelledby="heading-{{ order.id }}" data-bs-parent="#ordersAccordion">
                                     <div class="accordion-body">
@@ -46,7 +46,7 @@
                                             {% for orderProduct in order.orderProducts %}
                                                 <div class="list-group-item">
                                                     <div class="row align-items-center">
-                                                        <div class="col-md-1"><img src="{{ asset('uploads/products/' ~ orderProduct.product.image) }}" class="img-fluid rounded border" alt="{{ orderProduct.product.name }}"></div>
+                                                        <div class="col-md-1"><img src="{{ asset('uploads/imgs/products/' ~ orderProduct.product.image) }}" class="img-fluid rounded border" alt="{{ orderProduct.product.name }}"></div>
                                                         <div class="col-md-4 fw-bold">{{ orderProduct.product.name }}</div>
                                                         <div class="col-md-2 text-muted">x {{ orderProduct.quantity }}</div>
                                                         <div class="col-md-2">{{ (orderProduct.product.price * orderProduct.quantity)|number_format(2, ',', ' ') }} €</div>
@@ -58,11 +58,11 @@
                                         </div>
 
                                         <div class="text-end">
-                                            <a class="btn btn-outline-success btn-sm" href="{#{{ path('app_bill',{'id':order.id}) }}#}">Print Bill</a>
-{#                                            {% if not order.isCompleted %}#}
-{#                                                <a href="#}{#{{ path('app_orders_is-completed-update',{'id':order.id}) }}#}{#" class='btn btn-outline-primary btn-sm ms-2'>Mark as Delivered</a>#}
-{#                                            {% endif %}#}
-                                            <a onclick="return confirm('Are you sure you want to delete this order?')" href="{#{{ path('app_orders_remove',{'id':order.id})}}#}" class='btn btn-outline-danger btn-sm ms-2'>Delete Order</a>
+                                            <a class="btn btn-outline-success btn-sm" href="{{ path('app_bill',{'id':order.id}) }}">Show Bill</a>
+                                            {% if not order.isCompleted %}
+                                                <a href="{{ path('app_orders_is-completed-update',{'id':order.id}) }}" class='btn btn-outline-primary btn-sm ms-2'>Mark as Delivered</a>
+                                            {% endif %}
+                                            <a onclick="return confirm('Are you sure you want to delete this order?')" href="{{ path('app_order_delete',{'id':order.id})}}" class='btn btn-outline-danger btn-sm ms-2'>Delete Order</a>
                                         </div>
 
                                     </div>

@@ -39,8 +39,8 @@ final class OrderController extends AbstractController
 //            if ($order->isPayingOnDelivery()) {
 //            }
                 if (!empty($data['total'])) {
-                    $totalPrice = $data['total'] + $order->getCity()->getShippingCost();
 
+                    $totalPrice = $data['total'] + $order->getCity()->getShippingCost();
                     $order->setTotalPrice($totalPrice);
                     $order->setCreatedAt(new \DateTimeImmutable());
 //                $order->setIsPaymentCompleted(0);
@@ -178,7 +178,7 @@ final class OrderController extends AbstractController
     #[Route('admin/order/orders', name: 'app_order_list', methods: ['GET'])]
     public function orderList(OrderRepository $orderRepo, PaginatorInterface $paginator, Request $request): Response
     {
-        $data = $orderRepo->findAll();
+        $data = $orderRepo->findby([], ['id' => "DESC"]);
 
         $orders = $paginator->paginate($data, $request->query->getInt('page', 1), 2);
 
@@ -213,15 +213,29 @@ final class OrderController extends AbstractController
 //        ]);
 //    }
 
-//    #[Route('/order/{id}', name: 'app_order_delete', methods: ['POST'])]
-//    public function delete(Request $request, Order $order, EntityManagerInterface $entityManager): Response
-//    {
-//        if ($this->isCsrfTokenValid('delete'.$order->getId(), $request->getPayload()->getString('_token'))) {
-//            $entityManager->remove($order);
-//            $entityManager->flush();
-//        }
-//
-//        return $this->redirectToRoute('app_order_index', [], Response::HTTP_SEE_OTHER);
-//    }
+    #[Route('/admin/order/{id}/delete', name: 'app_order_delete')]
+    public function delete(Request $request, Order $order, EntityManagerInterface $entityManager): Response
+    {
+            $entityManager->remove($order);
+            $entityManager->flush();
+            $this->addFlash('success', 'Deletion successful');
+
+        return $this->redirectToRoute('app_order_list', [], Response::HTTP_SEE_OTHER);
+    }
+
+    #[Route('/editor/order/{id}/is-completed/update', name: 'app_orders_is-completed-update')]
+    public function isCompletedUpdate(Request $request, $id, OrderRepository $orderRepository, EntityManagerInterface $entityManager):Response
+    {
+        $order = $orderRepository->find($id);
+        $order->setIsCompleted(true);
+        $entityManager->flush();
+
+        $this->addFlash('success', 'Update successful');
+
+        return $this->redirect($request->headers->get('referer'));
+        // return the previous route
+    }
+
+
 
 }
