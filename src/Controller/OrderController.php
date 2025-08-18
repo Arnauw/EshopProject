@@ -35,28 +35,28 @@ final class OrderController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
 
-            if (!empty($data['total'])) {
-                $totalPrice = $data['total'] + $order->getCity()->getShippingCost();
+//            if ($order->isPayingOnDelivery()) {
+//            }
+                if (!empty($data['total'])) {
+                    $totalPrice = $data['total'] + $order->getCity()->getShippingCost();
 
-                $order->setTotalPrice($totalPrice);
-                $order->setCreatedAt(new \DateTimeImmutable());
+                    $order->setTotalPrice($totalPrice);
+                    $order->setCreatedAt(new \DateTimeImmutable());
 //                $order->setIsPaymentCompleted(0);
-                //dd($order);
-                $entityManager->persist($order);
-                $entityManager->flush();
-
-                foreach ($data['cart'] as $value) {
-
-                    $orderProduct = new OrderProduct();
-                    $orderProduct->setOrder($order);
-                    $orderProduct->setProduct($value['product']);
-                    $orderProduct->setQuantity($value['quantity']);
-
-                    $entityManager->persist($orderProduct);
+                    //dd($order);
+                    $entityManager->persist($order);
                     $entityManager->flush();
-                }
 
-                if ($order->isPayingOnDelivery()) {
+                    foreach ($data['cart'] as $value) {
+
+                        $orderProduct = new OrderProduct();
+                        $orderProduct->setOrder($order);
+                        $orderProduct->setProduct($value['product']);
+                        $orderProduct->setQuantity($value['quantity']);
+
+                        $entityManager->persist($orderProduct);
+                        $entityManager->flush();
+                    }
 
                     $session->set('cart', []);
 
@@ -85,7 +85,6 @@ final class OrderController extends AbstractController
 //                $stripeRedirectUrl = $paymentStripe->getStripeRedirectUrl();
 //                //dd( $stripeRedirectUrl);
 //                return $this->redirect($stripeRedirectUrl);
-            }
         }
 
 //        return $this->render('order/index.html.twig', [
