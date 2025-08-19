@@ -39,5 +39,9 @@ final class BillController extends AbstractController
         return new Response('',200,[
             'Content-Type' => 'application/pdf'
         ]);
+
+//        return $this->render('bill/index.html.twig', [
+//            'order' => $order,
+//        ]);
     }
 }

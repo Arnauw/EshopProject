@@ -1,51 +1,118 @@
-{% block body %}
-    <div class="container">
-        <h1>Confirmation of order n°{{ order.id }}</h1>
-        <span>Date: {{ order.createdAt|date }}</span>
-        <p>Thank you for your order, it will be processed as soon as possible.</p>
-        <span class='text-primary'>Order details</span>
-        <thead>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Confirmation of order #{{ order.id }}</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            color: #333;
+            line-height: 1.5;
+        }
+
+        .container {
+            padding: 20px;
+            max-width: 600px;
+            margin: 0 auto;
+            border: 1px solid #ddd;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        th, td {
+            border: 1px solid #eee;
+            padding: 10px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f7f7f7;
+        }
+
+        .text-right {
+            text-align: right;
+        }
+
+        .totals {
+            margin-top: 20px;
+        }
+
+        .totals td {
+            border: none;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <h1>Confirmation of order #{{ order.id }}</h1>
+    </div>
+
+    <p><strong>Date:</strong> {{ order.createdAt|date('F jS, Y H:i') }}</p>
+    <p>Thank you for your order, {{ order.firstName }}. It will be processed as soon as possible.</p>
+
+    <hr>
+
+    <h4>Order Details</h4>
+
+    <table class="client-details">
         <tr>
             <th>Name</th>
-            <th>Surname</th>
+            <td>{{ order.firstName }} {{ order.lastName }}</td>
+        </tr>
+        <tr>
             <th>Phone Number</th>
+            <td>{{ order.phoneNumber }}</td>
+        </tr>
+        <tr>
             <th>Address</th>
-            <th>City</th>
+            <td>{{ order.address }}, {{ order.city.name }}</td>
+        </tr>
+    </table>
+
+    <h4>Order Body</h4>
+    <table class="order-body">
+        <thead>
+        <tr>
+            <th>Product</th>
+            <th>Quantity</th>
+            <th class="text-right">Total Price</th>
         </tr>
         </thead>
-        <tr>
-            <td>{{ order.firstName }} </td>
-            <td>{{ order.lastName }} </td>
-            <td>{{ order.phoneNumber }} </td>
-            <td>{{ order.address }} </td>
-            <td>{{ order.city.name }} </td>
-        </tr>
-        </table>
-        <span class='text-primary'>Order body</span>
-        <table class="table table-bordered">
-            <thead>
+        <tbody>
+        {% for orderProduct in orderProducts %}
             <tr>
-                <th>Product name</th>
-                <th>Product description</th>
-                <th>Product price</th>
-                <th>Quantity</th>
-                <th>Total price</th>
+                <td>{{ orderProduct.product.name }}</td>
+                <td>{{ orderProduct.quantity }}</td>
+                <td class="text-right">{{ (orderProduct.product.price * orderProduct.quantity)|number_format(2, ',', ' ') }}
+                    €
+                </td>
             </tr>
-            </thead>
-            {% for product in order.orderProducts %}
-                <tr>
-                    <td>{{ product.product.name }}</td>
-                    <td>{{ product.product.description|slice(0,100) }}</td>
-                    <td>{{ product.product.price }} €</td>
-                    <td>{{ product.quantity }}</td>
-                    <td>{{ product.product.price*product.quantity }} €</td>
-                </tr>
-            {% endfor %}
-        </table>
+        {% endfor %}
+        </tbody>
+    </table>
 
-        <br><br><br>
-        <span>Shipping fees : {{ order.city.shippingCost }} €</span>
-        <hr>
-        <h5 class='mb-5'>Total to pay : {{ order.totalPrice }} €</h5>
-    </div>
-{% endblock %}
+    <table class="totals">
+        <tr>
+            <td>Shipping fees:</td>
+            <td class="text-right">{{ order.city.shippingCost|number_format(2, ',', ' ') }} €</td>
+        </tr>
+        <tr>
+            <td><strong style="font-size: 1.2em;">Total to pay:</strong></td>
+            <td class="text-right"
+                style="font-size: 1.2em; font-weight: bold;">{{ order.totalPrice|number_format(2, ',', ' ') }} €
+            </td>
+        </tr>
+    </table>
+</div>
+</body>
+</html>

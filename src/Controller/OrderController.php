@@ -69,16 +69,22 @@ final class OrderController extends AbstractController
 
                 $session->set('cart', []);
 
-                $html = $this->renderView('mail/orderConfirm.html.twig', [
-                    'order' => $order
-                ]);
-                $email = new Email()
-                    ->from('amineshop@test.com')
-                    ->to('arnaud.rabel@gmail.com')
-//                    ->to($order->getEmail())
-                    ->subject('Order Confirmation')
-                    ->html($html);
-                $mailer->send($email);
+//dd($orderProduct);
+
+                // MAILTRAP IS BLOCKED BY DSI, FUCK THEM
+//                $html = $this->renderView('mail/orderConfirm.html.twig', [
+//                    'order' => $order,
+//                    'orderProducts' => $data['cart'],
+//                ]);
+//                $email = new Email()
+//                    ->from('amineshop@test.com')
+//                    ->to('arnaud.rabel@gmail.com')
+////                    ->to($order->getEmail())
+//                    ->subject('Order Confirmation')
+//                    ->html($html);
+//                $mailer->send($email);
+
+
 
                 $paymentStripe = new StripePayment();
 
@@ -88,83 +94,20 @@ final class OrderController extends AbstractController
                 //dd( $stripeRedirectUrl);
                 return $this->redirect($stripeRedirectUrl);
 
-                return $this->render('order/order_message.html.twig', [
-                    'order' => $order
-                ]);
+//                return $this->render('mail/orderConfirm.html.twig', [
+//                    'order' => $order,
+//                    'orderProducts' => $data['cart'],
+//                ]);
 
-//                    $html = $this->renderView('mail/orderConfirm.html.twig',[
-//                        'order'=>$order
-//                    ]);
-
-//                    $email = (new Email())
-//                    ->from('sneakhub@gmailcom')
-//                    //->to('to@gmailcom')
-//                    ->to($order->getEmail())
-//                        ->subject('Confirmation de réception de commande')
-//                        ->html($html);
-//                    $this->mailer->send($email);
-
-//                    return $this->redirectToRoute('app_order_message');
             }
 
-//                $paymentStripe = new StripePayment(); //on importe notre service avec sa classe
-//                $shippingCost = $order->getCity()->getShippingCost();
-//                $paymentStripe->startPayment($data, $shippingCost, $order->getId()); //on importe le panier donc $data
-//                $stripeRedirectUrl = $paymentStripe->getStripeRedirectUrl();
-//                //dd( $stripeRedirectUrl);
-//                return $this->redirect($stripeRedirectUrl);
         }
-
-//        return $this->render('order/index.html.twig', [
-//            'form'=>$form->createView(),
-//            'total'=>$data['total'],
-//        ]);
 
         return $this->render('order/index.html.twig', [
             'orders' => $order,
             'form' => $form,
             'total' => $data['total'],
         ]);
-
-//        OLD VERSION BEFORE CART SERVICE
-//        $cart = $session->get('cart', []);
-//
-//        $order = new Order();
-//        $form = $this->createForm(OrderType::class, $order);
-//        $form->handleRequest($request);
-//
-//        if ($form->isSubmitted() && $form->isValid()) {
-//            $entityManager->persist($order);
-//            $entityManager->flush();
-//
-//            return $this->redirectToRoute('app_order', [], Response::HTTP_SEE_OTHER);
-//        }
-//
-//
-//        $cartWithData = [];
-//
-////        dd($cart);
-//
-//        foreach ($cart as $id => $quantity) {
-//            $cartWithData[] = [
-//                'product' => $productRepository->find($id),
-//                'quantity' => $quantity,
-//            ];
-//        }
-//
-//        $total = array_sum(
-//            array_map(function ($item) {
-//                return $item['product']->getPrice() * $item['quantity'];
-//            }, $cartWithData)
-//        );
-//
-//
-//        return $this->render('order/index.html.twig', [
-//            'orders' => $order,
-//            'form' => $form,
-//            'total' => $total,
-//        ]);
-
 
     }
 
