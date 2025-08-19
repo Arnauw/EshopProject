@@ -1,0 +1,51 @@
+{% block body %}
+    <div class="container">
+        <h1>Confirmation of order n°{{ order.id }}</h1>
+        <span>Date: {{ order.createdAt|date }}</span>
+        <p>Thank you for your order, it will be processed as soon as possible.</p>
+        <span class='text-primary'>Order details</span>
+        <thead>
+        <tr>
+            <th>Name</th>
+            <th>Surname</th>
+            <th>Phone Number</th>
+            <th>Address</th>
+            <th>City</th>
+        </tr>
+        </thead>
+        <tr>
+            <td>{{ order.firstName }} </td>
+            <td>{{ order.lastName }} </td>
+            <td>{{ order.phoneNumber }} </td>
+            <td>{{ order.address }} </td>
+            <td>{{ order.city.name }} </td>
+        </tr>
+        </table>
+        <span class='text-primary'>Order body</span>
+        <table class="table table-bordered">
+            <thead>
+            <tr>
+                <th>Product name</th>
+                <th>Product description</th>
+                <th>Product price</th>
+                <th>Quantity</th>
+                <th>Total price</th>
+            </tr>
+            </thead>
+            {% for product in order.orderProducts %}
+                <tr>
+                    <td>{{ product.product.name }}</td>
+                    <td>{{ product.product.description|slice(0,100) }}</td>
+                    <td>{{ product.product.price }} €</td>
+                    <td>{{ product.quantity }}</td>
+                    <td>{{ product.product.price*product.quantity }} €</td>
+                </tr>
+            {% endfor %}
+        </table>
+
+        <br><br><br>
+        <span>Shipping fees : {{ order.city.shippingCost }} €</span>
+        <hr>
+        <h5 class='mb-5'>Total to pay : {{ order.totalPrice }} €</h5>
+    </div>
+{% endblock %}

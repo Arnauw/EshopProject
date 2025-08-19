@@ -16,16 +16,23 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
+use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Mime\Email;
 use Symfony\Component\Routing\Attribute\Route;
 
 final class OrderController extends AbstractController
 {
+    /**
+     * @throws TransportExceptionInterface
+     */
     #[Route('/order', name: 'app_order', methods: ['GET', 'POST'])]
     public function index(
         Request                $request,
         SessionInterface       $session,
         EntityManagerInterface $entityManager,
-        Cart                   $cart
+        Cart                   $cart,
+        MailerInterface        $mailer,
     ): Response
     {
         $data = $cart->getCart($session);
@@ -38,32 +45,43 @@ final class OrderController extends AbstractController
 
 //            if ($order->isPayingOnDelivery()) {
 //            }
-                if (!empty($data['total'])) {
+            if (!empty($data['total'])) {
 
-                    $totalPrice = $data['total'] + $order->getCity()->getShippingCost();
-                    $order->setTotalPrice($totalPrice);
-                    $order->setCreatedAt(new \DateTimeImmutable());
+                $totalPrice = $data['total'] + $order->getCity()->getShippingCost();
+                $order->setTotalPrice($totalPrice);
+                $order->setCreatedAt(new \DateTimeImmutable());
 //                $order->setIsPaymentCompleted(0);
-                    //dd($order);
-                    $entityManager->persist($order);
+                //dd($order);
+                $entityManager->persist($order);
+                $entityManager->flush();
+
+                foreach ($data['cart'] as $value) {
+
+                    $orderProduct = new OrderProduct();
+                    $orderProduct->setOrder($order);
+                    $orderProduct->setProduct($value['product']);
+                    $orderProduct->setQuantity($value['quantity']);
+
+                    $entityManager->persist($orderProduct);
                     $entityManager->flush();
+                }
 
-                    foreach ($data['cart'] as $value) {
+                $session->set('cart', []);
 
-                        $orderProduct = new OrderProduct();
-                        $orderProduct->setOrder($order);
-                        $orderProduct->setProduct($value['product']);
-                        $orderProduct->setQuantity($value['quantity']);
+                $html = $this->renderView('mail/orderConfirm.html.twig', [
+                    'order' => $order
+                ]);
+                $email = new Email()
+                    ->from('amineshop@test.com')
+                    ->to('arnaud.rabel@gmail.com')
+//                    ->to($order->getEmail())
+                    ->subject('Order Confirmation')
+                    ->html($html);
+                $mailer->send($email);
 
-                        $entityManager->persist($orderProduct);
-                        $entityManager->flush();
-                    }
-
-                    $session->set('cart', []);
-
-                    return $this->render('order/order_message.html.twig', [
-                        'order' => $order
-                    ]);
+                return $this->render('order/order_message.html.twig', [
+                    'order' => $order
+                ]);
 
 //                    $html = $this->renderView('mail/orderConfirm.html.twig',[
 //                        'order'=>$order
@@ -78,7 +96,7 @@ final class OrderController extends AbstractController
 //                    $this->mailer->send($email);
 
 //                    return $this->redirectToRoute('app_order_message');
-                }
+            }
 
 //                $paymentStripe = new StripePayment(); //on importe notre service avec sa classe
 //                $shippingCost = $order->getCity()->getShippingCost();
@@ -216,15 +234,15 @@ final class OrderController extends AbstractController
     #[Route('/admin/order/{id}/delete', name: 'app_order_delete')]
     public function delete(Request $request, Order $order, EntityManagerInterface $entityManager): Response
     {
-            $entityManager->remove($order);
-            $entityManager->flush();
-            $this->addFlash('success', 'Deletion successful');
+        $entityManager->remove($order);
+        $entityManager->flush();
+        $this->addFlash('success', 'Deletion successful');
 
         return $this->redirectToRoute('app_order_list', [], Response::HTTP_SEE_OTHER);
     }
 
     #[Route('/editor/order/{id}/is-completed/update', name: 'app_orders_is-completed-update')]
-    public function isCompletedUpdate(Request $request, $id, OrderRepository $orderRepository, EntityManagerInterface $entityManager):Response
+    public function isCompletedUpdate(Request $request, $id, OrderRepository $orderRepository, EntityManagerInterface $entityManager): Response
     {
         $order = $orderRepository->find($id);
         $order->setIsCompleted(true);
@@ -235,7 +253,6 @@ final class OrderController extends AbstractController
         return $this->redirect($request->headers->get('referer'));
         // return the previous route
     }
-
 
 
 }
