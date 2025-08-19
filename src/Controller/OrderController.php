@@ -10,6 +10,7 @@ use App\Form\OrderType;
 use App\Repository\OrderRepository;
 use App\Repository\ProductRepository;
 use App\Service\Cart;
+use App\Service\StripePayment;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -78,6 +79,14 @@ final class OrderController extends AbstractController
                     ->subject('Order Confirmation')
                     ->html($html);
                 $mailer->send($email);
+
+                $paymentStripe = new StripePayment();
+
+                $shippingCost = $order->getCity()->getShippingCost();
+                $paymentStripe->startPayment($data, $shippingCost, $order->getId());
+                $stripeRedirectUrl = $paymentStripe->getStripeRedirectUrl();
+                //dd( $stripeRedirectUrl);
+                return $this->redirect($stripeRedirectUrl);
 
                 return $this->render('order/order_message.html.twig', [
                     'order' => $order
