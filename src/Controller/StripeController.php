@@ -92,11 +92,11 @@ class StripeController extends AbstractController
 //        }
 
         switch ($event->type) {
-            case 'payment_intent.succeded':
+            case 'payment_intent.succeeded':
 
                 $paymentIntent = $event->data->object;
 
-                $fileName = 'stripe-detail-' . uniqid() . 'txt';
+                $fileName = 'stripe-detail-' . uniqid() . '.txt';
                 file_put_contents($fileName, $paymentIntent);
 
                 break;
