@@ -4,7 +4,6 @@ namespace App\Controller;
 
 use App\Repository\OrderRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use App\Service\Cart;
 use Stripe\Stripe;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -34,12 +33,13 @@ class StripeController extends AbstractController
     }
 
     #[Route('/stripe/notify', name: 'app_stripe_notify')]
-    public function stripeNotify(Request                $request,
-                                 OrderRepository        $orderRepository,
-                                 EntityManagerInterface $entityManager): Response
-
+    public function stripeNotify(
+        Request                $request,
+        OrderRepository        $orderRepository,
+        EntityManagerInterface $entityManager
+    ): Response
     {
-//        dd('Webhook Stripe reçu');
+        //        dd('Webhook Stripe reçu');
 
         Stripe::setApiKey($_SERVER['STRIPE_SECRET']);
 
@@ -53,58 +53,49 @@ class StripeController extends AbstractController
         try {
 
             $event = \Stripe\Webhook::constructEvent(
-                $payload, $sigHeader, $endpoint_secret
+                $payload,
+                $sigHeader,
+                $endpoint_secret
             );
         } catch (\UnexpectedValueException $e) {
 
             return new Response('Invalid payload', 400);
-
         } catch (\Stripe\Exception\SignatureVerificationException $e) {
 
             return new Response('Invalid signature', 400);
         }
-
-//        switch ($event->type) {
-//            case 'payment_intent.succeeded':
-//
-//                $paymentIntent = $event->data->object;
-//
-//                $fileName = 'stripe-detail-' . uniqid() . '.txt';
-//
-//                $orderId = $paymentIntent->metadata->orderId;
-//                $order = $orderRepository->find($orderId);
-//
-//                $cartPrice = $order->getTotalPrice();
-//                $stripeTotalAmount = $paymentIntent->amount / 100;
-//                if ($cartPrice == $stripeTotalAmount) {
-//                    $order->setIsPaymentCompleted(1);
-//                    $entityManager->flush();
-//                }
-//
-//
-//                file_put_contents($fileName, $orderId);
-//                break;
-//            case 'payment_method.attached':
-//                $paymentMethod = $event->data->object;
-//                break;
-//            default :
-//                break;
-//        }
 
         switch ($event->type) {
             case 'payment_intent.succeeded':
 
                 $paymentIntent = $event->data->object;
 
-                $fileName = 'stripe-detail-' . uniqid() . '.txt';
+                $orderId = $paymentIntent->metadata->orderId;
+
+                $order = $orderRepository->find($orderId);
+
+                $cartPrice = $order->getTotalPrice();
+                $stripeTotalAmount = $paymentIntent->amount / 100;
+
+//                file_put_contents("payload.txt", $payload, FILE_APPEND);
+//                file_put_contents("order.txt", $order->getId(), FILE_APPEND);
+
+
+                if ($cartPrice == $stripeTotalAmount) {
+                    $order->setIsCompleted(1);
+                    $entityManager->flush();
+                }
+
+
+                $fileName = 'stripe-detail-' . uniqid('', true) . '.txt';
                 file_put_contents($fileName, $paymentIntent);
 
                 break;
-            case 'payment_method.attached' :
+            case 'payment_method.attached':
 
                 $paymentMethod = $event->data->object;
                 break;
-            default :
+            default:
                 break;
         }
 

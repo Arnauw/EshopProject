@@ -47,7 +47,7 @@ class Order
     private ?float $totalPrice = null;
 
     #[ORM\Column(nullable: true)]
-    private ?bool $isCompleted = null;
+    private ?bool $isCompleted = false;
 
     public function __construct()
     {
