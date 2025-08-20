@@ -4,9 +4,6 @@ Made at AFPA with ❤️, and a lot of coffee ☕.
 
 Amine Shop is a robust e-commerce platform built with the Symfony framework. It features a complete administrative backend for managing products, categories, and orders, and a clean, user-facing storefront with a card-based layout. The project is integrated with Stripe for secure payments and includes PDF bill generation.
 
-![Screenshot of the Amine Shop homepage](public/imgs/screenshot-homepage.png)
-*(Suggestion: Replace this with a real screenshot of your finished homepage located at `public/imgs/screenshot-homepage.png`)*
-
 ---
 
 ## Features
