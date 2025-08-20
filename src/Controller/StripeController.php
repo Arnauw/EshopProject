@@ -87,7 +87,7 @@ class StripeController extends AbstractController
                 }
 
 
-                $fileName = 'stripe-detail-' . uniqid('', true) . '.txt';
+                $fileName = 'stripe-detail-' . uniqid('', true) . '.log';
                 file_put_contents($fileName, $paymentIntent);
 
                 break;

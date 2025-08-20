@@ -20,4 +20,4 @@
 ###< symfony/asset-mapper ###
 
 .~lock*
-stripe-detail-*.txt
+stripe-detail-*.log
