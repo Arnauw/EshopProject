@@ -149,25 +149,25 @@ final class OrderController extends AbstractController
         if ($type === 'is-completed') {
             $data = $orderRepo->findBy(['isCompleted' => 1], ['id' => 'DESC']);
         } else if ($type === 'pay-on-stripe-not-delivered') {
-            $data = $orderRepo->findBy(['isCompleted' => null,
-//                'payOnDelivery'=>0, 'isPaymentCompleted'=>1
+            $data = $orderRepo->findBy(['isCompleted' => 0, 'isPaymentCompleted'=>1,
+//                'payOnDelivery'=>0,
             ],
                 ['id' => 'DESC']);
         } else if ($type === 'pay-on-stripe-is-delivered') {
-            $data = $orderRepo->findBy(['isCompleted' => 1,
-//                'payOnDelivery'=>0, 'isPaymentCompleted'=>1
+            $data = $orderRepo->findBy(['isCompleted' => 1, 'isPaymentCompleted'=>1,
+//                'payOnDelivery'=>0,
             ],
                 ['id' => 'DESC']);
         } else if ($type === 'no_delivery') {
-            $data = $orderRepo->findBy(['isCompleted' => null,
-//                'payOnDelivery'=>0, 'isPaymentCompleted'=>0
+            $data = $orderRepo->findBy(['isCompleted' => 0, 'isPaymentCompleted'=>0,
+//                'payOnDelivery'=>0,
             ],
                 ['id' => 'DESC']);
         } else if ($type === 'all') {
             $data = $orderRepo->findBy([], ['id' => "DESC"]);
         }
 
-        $orders = $paginator->paginate($data, $request->query->getInt('page', 1), 2);
+        $orders = $paginator->paginate($data, $request->query->getInt('page', 1), 20);
 
         return $this->render('order/orders.html.twig', [
             'orders' => $orders,
@@ -207,7 +207,7 @@ final class OrderController extends AbstractController
         $entityManager->flush();
         $this->addFlash('success', 'Deletion successful');
 
-        return $this->redirectToRoute('app_order_list', [], Response::HTTP_SEE_OTHER);
+        return $this->redirectToRoute('app_order_list', ['type' => 'all'], Response::HTTP_SEE_OTHER);
     }
 
     #[Route('/editor/order/{id}/is-completed/update', name: 'app_orders_is-completed-update')]
