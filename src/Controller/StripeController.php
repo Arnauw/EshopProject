@@ -80,12 +80,10 @@ class StripeController extends AbstractController
 //                file_put_contents("payload.txt", $payload, FILE_APPEND);
 //                file_put_contents("order.txt", $order->getId(), FILE_APPEND);
 
-
                 if ($cartPrice == $stripeTotalAmount) {
-                    $order->setIsCompleted(1);
+                    $order->setIsPaymentCompleted(1);
                     $entityManager->flush();
                 }
-
 
                 $fileName = 'stripe-detail-' . uniqid('', true) . '.log';
                 file_put_contents($fileName, $paymentIntent);
@@ -99,6 +97,6 @@ class StripeController extends AbstractController
                 break;
         }
 
-        return new Response('Événement reçu avec succès', 200);
+        return new Response('Event received successfully.', 200);
     }
 }
