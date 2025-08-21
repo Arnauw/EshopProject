@@ -143,6 +143,11 @@
 
                 <div class="navbar-nav ms-auto">
 
+                    <form data-turbo='false' method="post" action="{{ path('app_search')}}" class="d-flex pe-5" role="search">
+                        <input name="word" class="form-control me-2" type="search" placeholder="Search a product" aria-label="Search">
+                        <button class="btn btn-outline-success" type="submit">Search</button>
+                    </form>
+
                     <div class="nav-item mt-1">
                         <a href="{{ path('app_cart') }}" class="navbar-text me-3">
                             Cart
