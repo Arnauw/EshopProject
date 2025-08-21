@@ -171,6 +171,7 @@ final class OrderController extends AbstractController
 
         return $this->render('order/orders.html.twig', [
             'orders' => $orders,
+            'type' => $type,
         ]);
     }
 
@@ -200,16 +201,18 @@ final class OrderController extends AbstractController
 //        ]);
 //    }
 
-    #[Route('/admin/order/{id}/delete', name: 'app_order_delete')]
-    public function delete(Request $request, Order $order, EntityManagerInterface $entityManager): Response
-    {
-        // Use parse_url to break the URL into its components.
-        $urlParts = parse_url($request->headers->get('referer'));
 
-        // Strips off the entire query string (?page=2, etc.).
-        $pathWithoutQuery = $urlParts['path'];
-        // Get the type from the referer header
-        $type = basename($pathWithoutQuery);
+    #[Route('/admin/order/{id}/delete/{type}', name: 'app_order_delete')]
+    public function delete($type, Order $order, EntityManagerInterface $entityManager): Response
+    {
+
+
+////         Use parse_url to break the URL into its components.
+//        $urlParts = parse_url($request->headers->get('referer'));
+//        // Strips off the entire query string (?page=2, etc.).
+//        $pathWithoutQuery = $urlParts['path'];
+//        // Get the type from the referer header
+//        $type = basename($pathWithoutQuery);
 //        dd($type);
 
         $entityManager->remove($order);
