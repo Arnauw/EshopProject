@@ -167,7 +167,7 @@ final class OrderController extends AbstractController
             $data = $orderRepo->findBy([], ['id' => "DESC"]);
         }
 
-        $orders = $paginator->paginate($data, $request->query->getInt('page', 1), 20);
+        $orders = $paginator->paginate($data, $request->query->getInt('page', 1), 1);
 
         return $this->render('order/orders.html.twig', [
             'orders' => $orders,
@@ -203,11 +203,22 @@ final class OrderController extends AbstractController
     #[Route('/admin/order/{id}/delete', name: 'app_order_delete')]
     public function delete(Request $request, Order $order, EntityManagerInterface $entityManager): Response
     {
+        // Use parse_url to break the URL into its components.
+        $urlParts = parse_url($request->headers->get('referer'));
+
+        // Strips off the entire query string (?page=2, etc.).
+        $pathWithoutQuery = $urlParts['path'];
+        // Get the type from the referer header
+        $type = basename($pathWithoutQuery);
+//        dd($type);
+
         $entityManager->remove($order);
         $entityManager->flush();
         $this->addFlash('success', 'Deletion successful');
 
-        return $this->redirectToRoute('app_order_list', ['type' => 'all'], Response::HTTP_SEE_OTHER);
+
+
+        return $this->redirectToRoute('app_order_list', ['type' => $type], Response::HTTP_SEE_OTHER);
     }
 
     #[Route('/editor/order/{id}/is-completed/update', name: 'app_orders_is-completed-update')]
