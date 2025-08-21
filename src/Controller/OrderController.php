@@ -24,9 +24,7 @@ use Symfony\Component\Routing\Attribute\Route;
 
 final class OrderController extends AbstractController
 {
-    /**
-     * @throws TransportExceptionInterface
-     */
+
     #[Route('/order', name: 'app_order', methods: ['GET', 'POST'])]
     public function index(
         Request                $request,
@@ -83,7 +81,6 @@ final class OrderController extends AbstractController
 //                    ->subject('Order Confirmation')
 //                    ->html($html);
 //                $mailer->send($email);
-
 
 
                 $paymentStripe = new StripePayment();
@@ -145,10 +142,30 @@ final class OrderController extends AbstractController
         return new Response(json_encode(['status' => 200, "message" => 'on', 'content' => $cityShippingPrice]));
     }
 
-    #[Route('admin/order/orders', name: 'app_order_list', methods: ['GET'])]
-    public function orderList(OrderRepository $orderRepo, PaginatorInterface $paginator, Request $request): Response
+    #[Route('admin/order/orders/{type}', name: 'app_order_list', methods: ['GET'])]
+    public function orderList($type, OrderRepository $orderRepo, PaginatorInterface $paginator, Request $request): Response
     {
-        $data = $orderRepo->findby([], ['id' => "DESC"]);
+
+        if ($type === 'is-completed') {
+            $data = $orderRepo->findBy(['isCompleted' => 1], ['id' => 'DESC']);
+        } else if ($type === 'pay-on-stripe-not-delivered') {
+            $data = $orderRepo->findBy(['isCompleted' => null,
+//                'payOnDelivery'=>0, 'isPaymentCompleted'=>1
+            ],
+                ['id' => 'DESC']);
+        } else if ($type === 'pay-on-stripe-is-delivered') {
+            $data = $orderRepo->findBy(['isCompleted' => 1,
+//                'payOnDelivery'=>0, 'isPaymentCompleted'=>1
+            ],
+                ['id' => 'DESC']);
+        } else if ($type === 'no_delivery') {
+            $data = $orderRepo->findBy(['isCompleted' => null,
+//                'payOnDelivery'=>0, 'isPaymentCompleted'=>0
+            ],
+                ['id' => 'DESC']);
+        } else if ($type === 'all') {
+            $data = $orderRepo->findBy([], ['id' => "DESC"]);
+        }
 
         $orders = $paginator->paginate($data, $request->query->getInt('page', 1), 2);
 

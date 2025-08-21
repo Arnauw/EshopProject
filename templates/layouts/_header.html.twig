@@ -107,24 +107,36 @@
                                     Users
                                 </a>
                                 <ul class="dropdown-menu">
-                                    <li><a class="dropdown-item" href="{{ path('app_user_new') }}">Create new user</a>
+                                    <li>
+                                        <a class="dropdown-item" href="{{ path('app_user_new') }}">Create new user</a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item" href="{{ path('app_user_new') }}">Create new user</a>
                                     </li>
                                 </ul>
                             </li>
                         {% endif %}
 
-                        {% if 'admin/orders' not in app.request.pathInfo %}
-                            <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" role="button" aria-expanded="false"
-                                   href="{{ path('app_order_list') }}">
-                                    Orders
-                                </a>
-{#                                <ul class="dropdown-menu">#}
-{#                                    <li><a class="dropdown-item" href="{{ path('app_user_new') }}">Create new user</a>#}
-{#                                    </li>#}
-{#                                </ul>#}
-                            </li>
-                        {% endif %}
+                        <li class="nav-item dropdown">
+
+                            <a class="nav-link dropdown-toggle" href="{{ path('app_order_list',{'type':'all'}) }}" role="button"  aria-expanded="false">
+                                Orders
+                            </a>
+
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="{{ path('app_order_list',{'type':'is-completed'}) }}">Delivered
+                                        orders</a></li>
+                                <li><a class="dropdown-item" href="{{ path('app_order_list',{'type':'no_delivery'}) }}">Undelivered
+                                        orders</a></li>
+                                <li><a class="dropdown-item"
+                                       href="{{ path('app_order_list',{'type':'pay-on-stripe-not-delivered'}) }}">Online
+                                        paid orders not delivered</a></li>
+                                <li><a class="dropdown-item"
+                                       href="{{ path('app_order_list',{'type':'pay-on-stripe-is-delivered'}) }}">Online paid
+                                        orders delivered</a></li>
+                            </ul>
+                        </li>
+
                     {% endif %}
 
                 </ul>
@@ -132,9 +144,9 @@
                 <div class="navbar-nav ms-auto">
 
                     <div class="nav-item mt-1">
-                            <a href="{{ path('app_cart') }}" class="navbar-text me-3">
-                                Cart
-                            </a>
+                        <a href="{{ path('app_cart') }}" class="navbar-text me-3">
+                            Cart
+                        </a>
                     </div>
 
 
