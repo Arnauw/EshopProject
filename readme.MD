@@ -24,7 +24,7 @@ Amine Shop is a robust e-commerce platform built with the Symfony framework. It 
 ## Tech Stack
 
 *   **Framework:** Symfony 7+
-*   **Database / ORM:** MariaDB & Doctrine
+*   **Database / ORM:** MariaDB/MySQL & Doctrine
 *   **Frontend:** Twig with Bootstrap 5
 *   **Asset Management:** Symfony AssetMapper
 *   **JavaScript:** VanillaJS, Stimulus for Turbo compatibility
