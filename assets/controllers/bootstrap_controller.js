@@ -21,3 +21,7 @@ export default class extends Controller {
         });
     }
 }
+
+
+// Note: Fix bootstrap js on collapsed items.
+// Need to add data-controller="bootstrap" attribute to body for it to work.

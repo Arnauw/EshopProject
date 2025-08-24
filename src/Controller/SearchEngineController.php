@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Repository\ProductRepository;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -10,22 +11,23 @@ use Symfony\Component\Routing\Attribute\Route;
 
 final class SearchEngineController extends AbstractController
 {
-    #[Route('/search', name: 'app_search', methods: ['POST'])]
-    public function search(Request $request, ProductRepository $productRepo): Response
+    #[Route('/search', name: 'app_search', methods: ['GET'])]
+    public function search(Request $request, ProductRepository $productRepo, PaginatorInterface $paginator): Response
     {
 
-//        dd($request->isMethod(Request::METHOD_POST));
+        $word = $request->query->get('word', '');
 
-        if ($request->isMethod(Request::METHOD_POST)) {
-            $word = $request->request->get('word');
+        if ($word !== '') {
+
             $results = $productRepo->searchEngine($word);
+
+            $products = $paginator->paginate($results, $request->query->getInt('page', 1), 8);
         } else {
-            $word = '';
-            $results = [];
+            $products = [];
         }
 
         return $this->render('search_engine/index.html.twig', [
-            'products' => $results,
+            'products' => $products,
             'word' => $word,
         ]);
     }

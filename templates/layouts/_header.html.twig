@@ -149,7 +149,7 @@
                             </span>
                     </div>
 
-                    <form data-turbo='false' method="post" action="{{ path('app_search')}}" class="d-flex me-3" role="search">
+                    <form data-turbo='false' method="get" action="{{ path('app_search')}}" class="d-flex me-3" role="search">
                         <input name="word" class="form-control me-2" type="search" placeholder="Search a product" aria-label="Search">
                         <button class="btn btn-outline-success" type="submit">Search</button>
                     </form>
