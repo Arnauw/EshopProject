@@ -143,25 +143,34 @@
 
                 <div class="navbar-nav ms-auto">
 
-                    <form data-turbo='false' method="post" action="{{ path('app_search')}}" class="d-flex pe-5" role="search">
+                    <div class="nav-item mt-1">
+                            <span class="navbar-text me-3">
+                                Welcome, {{ app.user.firstName|default(app.user.userIdentifier) }}!
+                            </span>
+                    </div>
+
+                    <form data-turbo='false' method="post" action="{{ path('app_search')}}" class="d-flex me-3" role="search">
                         <input name="word" class="form-control me-2" type="search" placeholder="Search a product" aria-label="Search">
                         <button class="btn btn-outline-success" type="submit">Search</button>
                     </form>
 
-                    <div class="nav-item mt-1">
-                        <a href="{{ path('app_cart') }}" class="navbar-text me-3">
-                            Cart
+                    <div class="nav-item me-4">
+                        <a href="{{ path('app_cart') }}" class="nav-link position-relative">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" class="bi bi-cart" viewBox="0 0 16 16">
+                                <path d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 13 12H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5zM3.102 4l1.313 7h8.17l1.313-7H3.102zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2zm7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
+                            </svg>
+                            {% set cart_quantity = cart_service.getCartQuantity() %}
+                            {% if cart_quantity > 0 %}
+                                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                                        {{ cart_quantity }}
+                                        <span class="visually-hidden">items in cart</span>
+                                    </span>
+                            {% endif %}
                         </a>
                     </div>
 
 
                     {% if app.user %}
-                        <div class="nav-item mt-1">
-                            <span class="navbar-text me-3">
-                                Welcome, {{ app.user.firstName|default(app.user.userIdentifier) }}!
-                            </span>
-                        </div>
-
                         <div class="nav-item">
                             <a href="{{ path('app_logout') }}" class="btn btn-outline-light">Logout</a>
                         </div>

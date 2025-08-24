@@ -5,7 +5,6 @@ namespace App\Controller;
 use App\Entity\City;
 use App\Entity\Order;
 use App\Entity\OrderProduct;
-use App\Entity\User;
 use App\Form\OrderType;
 use App\Repository\OrderRepository;
 use App\Repository\ProductRepository;
@@ -32,9 +31,10 @@ final class OrderController extends AbstractController
         EntityManagerInterface $entityManager,
         Cart                   $cart,
         MailerInterface        $mailer,
+        ProductRepository $productRepo
     ): Response
     {
-        $data = $cart->getCart($session);
+        $data = $cart->getCart($productRepo);
 
         $order = new Order();
         $form = $this->createForm(OrderType::class, $order);
@@ -167,7 +167,7 @@ final class OrderController extends AbstractController
             $data = $orderRepo->findBy([], ['id' => "DESC"]);
         }
 
-        $orders = $paginator->paginate($data, $request->query->getInt('page', 1), 1);
+        $orders = $paginator->paginate($data, $request->query->getInt('page', 1), 20);
 
         return $this->render('order/orders.html.twig', [
             'orders' => $orders,

@@ -12,13 +12,8 @@ use Symfony\Component\Routing\Attribute\Route;
 final class CartController extends AbstractController
 {
 
-    public function __construct(private readonly ProductRepository $productRepository,)
-    {
-
-    }
-
     #[Route('/cart', name: 'app_cart', methods: ['GET'])]
-    public function cart(SessionInterface $session, Cart $cart): Response
+    public function cart(ProductRepository $productRepo, Cart $cart): Response
     {
 
 //        OLD VERSION BEFORE CART SERVICE
@@ -44,12 +39,12 @@ final class CartController extends AbstractController
 ////        dd($total);
 ////        dd($cartWithData);
 //
-//        return $this->render('cart/index.html.twig', [
+//        return $this->render('cart/success.html.twig', [
 //            'items' => $cartWithData, // on retourne ces deux variables afin de les récupérer dans la vue
 //            'total' => $total,
 //        ]);
 
-        $data = $cart->getCart($session);
+        $data = $cart->getCart($productRepo);
 
         return $this->render('cart/index.html.twig', [
             'items'=>$data['cart'],

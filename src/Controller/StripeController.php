@@ -19,7 +19,7 @@ class StripeController extends AbstractController
     {
         $session->set('cart', []);
 
-        return $this->render('stripe/index.html.twig', [
+        return $this->render('stripe/success.html.twig', [
             'controller_name' => 'StripeController',
         ]);
     }
@@ -27,7 +27,7 @@ class StripeController extends AbstractController
     #[Route('/pay/cancel', name: 'app_stripe_cancel')]
     public function cancel(): Response
     {
-        return $this->render('stripe/index.html.twig', [
+        return $this->render('stripe/cancel.html.twig', [
             'controller_name' => 'StripeController',
         ]);
     }
