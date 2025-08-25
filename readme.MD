@@ -74,10 +74,13 @@ APP_DEBUG=1
 # Your local database connection string
 DATABASE_URL="mysql://db_user:db_password@127.0.0.1:3306/amine_shop_db?serverVersion=mariadb-10.11&charset=utf8mb4"
 
+# Your Mailtrap credentials.
+MAILER_DSN="smtp://YOUR_USERNAME:YOUR_PASSWORD@sandbox.smtp.mailtrap.io:2525"
+
+
 # Your Stripe API keys
-STRIPE_KEY=pk_test_...
-STRIPE_SECRET=sk_test_...
-STRIPE_WEBHOOK_SECRET=whsec_...
+STRIPE_SECRET="sk_test_..."
+STRIPE_WEBHOOK_SECRET="whsec_..."
 ```
 
 **4. Set up the Database:**
@@ -112,6 +115,33 @@ To test the payment confirmation webhook, you must forward Stripe events to your
     ```
 
 3.  The CLI will output a webhook signing secret (`whsec_...`). Copy this and place it in your `.env.local` file for the `STRIPE_WEBHOOK_SECRET` variable.
+
+---
+
+## Mailtrap Setup (Local Email Testing)
+
+To test email sending locally without spamming real inboxes, this project is configured to use [Mailtrap.io](https://mailtrap.io/), which captures all outgoing emails in a virtual inbox.
+
+### 1. Setup
+
+1.  **Create a Mailtrap Account:** Go to [Mailtrap.io](https://mailtrap.io/) and sign up for a free account.
+2.  **Find Your Credentials:** In your Mailtrap inbox, find the SMTP settings. You will need the **Host**, **Port**, **Username**, and **Password**.
+3.  **Configure `.env.local`:** Open your `.env.local` file and update the `MAILER_DSN` variable with your Mailtrap credentials.
+
+### 2. Testing
+
+This application sends emails asynchronously using a message queue. To see your test emails:
+
+1.  **Trigger an Email:** Perform an action in the application that sends an email (e.g., place a test order).
+2.  **Run the Messenger Worker:** Open your terminal and run the following command. This worker will process the email queue and send the email to Mailtrap.
+
+    ```bash
+    php bin/console messenger:consume async -vv
+    ```
+    *(The worker will run until you stop it with `Ctrl + C`)*
+
+3.  **Check Your Mailtrap Inbox:** The email will appear in your Mailtrap inbox within a few seconds.
+    ```
 
 ---
 
