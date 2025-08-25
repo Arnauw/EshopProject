@@ -50,7 +50,23 @@ final class OrderController extends AbstractController
                 $order->setTotalPrice($totalPrice);
                 $order->setCreatedAt(new \DateTimeImmutable('now', new \DateTimeZone('Europe/Paris')));
 //                $order->setIsPaymentCompleted(0);
-                //dd($order);
+
+
+// Trying to prevent ordering more than in stock from controller
+//                foreach ($data['cart'] as $dataCart) {
+//
+//                    $quantityInCart = $dataCart['quantity'];
+//
+//                    $productStock = $dataCart['product']->getStock();
+//
+//                    if ($quantityInCart > $productStock) {
+//
+//                        $this->addFlash('danger', 'You cannot order more of "' . $dataCart['product']->getName() . '" than is available in stock. Please adjust your cart before proceeding.');
+//
+//                        return $this->redirectToRoute('app_cart');
+//                    }
+//                }
+
                 $entityManager->persist($order);
                 $entityManager->flush();
 
@@ -59,7 +75,10 @@ final class OrderController extends AbstractController
                     $orderProduct = new OrderProduct();
                     $orderProduct->setOrder($order);
                     $orderProduct->setProduct($value['product']);
+
+
                     $orderProduct->setQuantity($value['quantity']);
+
 
                     $entityManager->persist($orderProduct);
                     $entityManager->flush();
@@ -206,7 +225,6 @@ final class OrderController extends AbstractController
     public function delete($type, Order $order, EntityManagerInterface $entityManager): Response
     {
 
-
 ////         Use parse_url to break the URL into its components.
 //        $urlParts = parse_url($request->headers->get('referer'));
 //        // Strips off the entire query string (?page=2, etc.).
@@ -219,12 +237,10 @@ final class OrderController extends AbstractController
         $entityManager->flush();
         $this->addFlash('success', 'Deletion successful');
 
-
-
         return $this->redirectToRoute('app_order_list', ['type' => $type], Response::HTTP_SEE_OTHER);
     }
 
-    #[Route('/editor/order/{id}/is-completed/update', name: 'app_orders_is-completed-update')]
+    #[Route('/admin/order/{id}/is-completed/update', name: 'app_orders_is-completed-update')]
     public function isCompletedUpdate(Request $request, $id, OrderRepository $orderRepository, EntityManagerInterface $entityManager): Response
     {
         $order = $orderRepository->find($id);

@@ -29,7 +29,7 @@ readonly class Cart
             ];
         }
 
-        $total = array_sum(array_map(function ($item) {
+        $total = array_sum(array_map(static function ($item) {
             return $item['product']->getPrice() * $item['quantity'];
         }, $cartWithData));
 
