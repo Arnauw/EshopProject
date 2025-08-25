@@ -2,7 +2,7 @@
 Must :
 - [ ] CGU
 - [ ] RGPD
-- ``[ ] Stock``
+- [x] Handling stock correctly when purchasing
 - [ ] Slugify products/other for SEO
 - [ ] Meta Description/Title for SEO
 - [ ] Lots of User features (see below)
