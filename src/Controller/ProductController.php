@@ -62,7 +62,7 @@ final class ProductController extends AbstractController
             $stockHistory = new ProductHistory();
             $stockHistory->setProduct($product);
             $stockHistory->setQuantity($product->getStock());
-            $stockHistory->setCreatedAt(new \DateTimeImmutable());
+            $stockHistory->setCreatedAt(new \DateTimeImmutable('now', new \DateTimeZone('Europe/Paris')));
             $entityManager->persist($stockHistory);
             $entityManager->flush();
 
@@ -142,7 +142,7 @@ final class ProductController extends AbstractController
             $stockHistory = new ProductHistory();
             $stockHistory->setProduct($product);
             $stockHistory->setQuantity($product->getStock());
-            $stockHistory->setCreatedAt(new \DateTimeImmutable());
+            $stockHistory->setCreatedAt(new \DateTimeImmutable('now', new \DateTimeZone('Europe/Paris')));
             $entityManager->persist($stockHistory);
             $entityManager->flush();
 

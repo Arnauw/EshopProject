@@ -48,7 +48,7 @@ final class OrderController extends AbstractController
 
                 $totalPrice = $data['total'] + $order->getCity()->getShippingCost();
                 $order->setTotalPrice($totalPrice);
-                $order->setCreatedAt(new \DateTimeImmutable());
+                $order->setCreatedAt(new \DateTimeImmutable('now', new \DateTimeZone('Europe/Paris')));
 //                $order->setIsPaymentCompleted(0);
                 //dd($order);
                 $entityManager->persist($order);
