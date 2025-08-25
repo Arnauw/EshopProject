@@ -143,9 +143,9 @@
 
                 <div class="navbar-nav ms-auto">
 
-                    <div class="nav-item mt-1">
+                    <div class="nav-item mt-2">
                             <span class="navbar-text me-3">
-                                Welcome, {{ app.user.firstName|default(app.user.userIdentifier) }}!
+                                Welcome, {{ app.user.firstName|default('new user') }}!
                             </span>
                     </div>
 
