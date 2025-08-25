@@ -17,35 +17,6 @@ final class CartController extends AbstractController
     #[Route('/cart', name: 'app_cart', methods: ['GET'])]
     public function cart(ProductRepository $productRepo, Cart $cart): Response
     {
-
-//        OLD VERSION BEFORE CART SERVICE
-////        $cart = $session->get('cart', []);
-//
-//        $cartWithData = [];
-//
-////        dd($cart);
-//
-//        foreach ($cart as $id => $quantity) {
-//            $cartWithData[] = [
-//                'product' => $this->productRepository->find($id),
-//                'quantity' => $quantity,
-//            ];
-//        }
-//
-//        $total = array_sum(
-//            array_map(function ($item) {
-//                return $item['product']->getPrice() * $item['quantity'];
-//            }, $cartWithData)
-//        );
-//
-////        dd($total);
-////        dd($cartWithData);
-//
-//        return $this->render('cart/success.html.twig', [
-//            'items' => $cartWithData, // on retourne ces deux variables afin de les récupérer dans la vue
-//            'total' => $total,
-//        ]);
-
         $data = $cart->getCart($productRepo);
 
         return $this->render('cart/index.html.twig', [
@@ -53,7 +24,6 @@ final class CartController extends AbstractController
             'total'=>$data['total']
         ]);
     }
-
 
     #[Route('/cart/add/{id}/', name: 'app_cart_add_product', methods: ['GET'])]
     public function addToCart(Product $product, SessionInterface $session, Request $request): Response
@@ -72,16 +42,25 @@ final class CartController extends AbstractController
 
         if ($quantityInCart > $product->getStock()) {
             $this->addFlash('danger', 'You cannot add more of "' . $product->getName() . '" as it is out of stock.');
-//            return $this->redirectToRoute('app_cart');
+
             return $this->redirect($request->headers->get('referer'));
         }
 
-//        if ($cart[$id] > 10) {
-//            $this->addFlash('warning', 'You cannot add more than 10 units of the same product to the cart.');
-//            return $this->redirectToRoute('app_cart');
-//        }
+        $session->set('cart', $cart);
 
-//        dd($cart);
+        return $this->redirectToRoute('app_cart');
+    }
+
+    #[Route('/cart/decrease/{id}', name: 'app_cart_decrease_quantity', methods: ['GET'])]
+    public function decreaseQuantity(int $id, SessionInterface $session): Response
+    {
+        $cart = $session->get('cart', []);
+
+        if (!empty($cart[$id]) && $cart[$id] > 1) {
+            $cart[$id]--;
+        } else {
+            unset($cart[$id]);
+        }
 
         $session->set('cart', $cart);
 
