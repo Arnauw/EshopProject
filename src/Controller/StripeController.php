@@ -39,7 +39,6 @@ class StripeController extends AbstractController
         EntityManagerInterface $entityManager
     ): Response
     {
-        //        dd('Webhook Stripe reçu');
 
         Stripe::setApiKey($_SERVER['STRIPE_SECRET']);
 
@@ -82,6 +81,17 @@ class StripeController extends AbstractController
 
                 if ($cartPrice == $stripeTotalAmount) {
                     $order->setIsPaymentCompleted(1);
+
+                    $orderProducts = $order->getOrderProducts();
+                    foreach ($orderProducts as $orderProduct) {
+                        $product = $orderProduct->getProduct();
+                        $newStock = $product->getStock() - $orderProduct->getQuantity();
+                        $product->setStock($newStock);
+                        $entityManager->persist($product);
+                    }
+
+//                    $order->getOrderProducts();
+                    file_put_contents("orderProducts.log", $order->getOrderProducts()->first()->getProduct()->getName(), FILE_APPEND);
                     $entityManager->flush();
                 }
 

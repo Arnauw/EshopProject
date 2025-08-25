@@ -102,10 +102,8 @@ final class ProductController extends AbstractController
                     $product->setImage($newFilename);
                     // Handle exception if something happens during file upload
                 }
-
                 $product->setImage($newFilename);
             }
-
 
             $entityManager->flush();
 

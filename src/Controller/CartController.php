@@ -2,9 +2,11 @@
 
 namespace App\Controller;
 
+use App\Entity\Product;
 use App\Repository\ProductRepository;
 use App\Service\Cart;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Attribute\Route;
@@ -54,15 +56,32 @@ final class CartController extends AbstractController
 
 
     #[Route('/cart/add/{id}/', name: 'app_cart_add_product', methods: ['GET'])]
-    public function addToCart(int $id, SessionInterface $session): Response
+    public function addToCart(Product $product, SessionInterface $session, Request $request): Response
     {
         $cart = $session->get('cart', []);
+
+        $id = $product->getId();
 
         if (!empty($cart[$id])) {
             $cart[$id]++;
         } else {
             $cart[$id] = 1;
         }
+
+        $quantityInCart = $cart[$id] ?? 0;
+
+        if ($quantityInCart > $product->getStock()) {
+            $this->addFlash('danger', 'You cannot add more of "' . $product->getName() . '" as it is out of stock.');
+//            return $this->redirectToRoute('app_cart');
+            return $this->redirect($request->headers->get('referer'));
+        }
+
+//        if ($cart[$id] > 10) {
+//            $this->addFlash('warning', 'You cannot add more than 10 units of the same product to the cart.');
+//            return $this->redirectToRoute('app_cart');
+//        }
+
+//        dd($cart);
 
         $session->set('cart', $cart);
 
@@ -72,16 +91,16 @@ final class CartController extends AbstractController
     #[Route("/cart/remove/{id}/", name: "app_cart_remove_product", methods: ['GET'])]
     public function removeFromCart(int $id, SessionInterface $session): Response
     {
-        // Récupération du contenu du panier en session, ou initialisation à un tableau vide si il n'existe pas
+
         $cart = $session->get('cart', []);
-        // Vérification si le produit à supprimer existe dans le panier
+
         if (!empty($cart[$id])) {
-            // Suppression du produit du panier
+
             unset($cart[$id]);
         }
-        // Mise à jour du contenu du panier en session
+
         $session->set('cart', $cart);
-        // Redirection vers la page du panier
+
         return $this->redirectToRoute('app_cart');
     }
 
