@@ -51,7 +51,6 @@ final class OrderController extends AbstractController
                 $order->setCreatedAt(new \DateTimeImmutable('now', new \DateTimeZone('Europe/Paris')));
 //                $order->setIsPaymentCompleted(0);
 
-
 // Trying to prevent ordering more than in stock from controller
 //                foreach ($data['cart'] as $dataCart) {
 //

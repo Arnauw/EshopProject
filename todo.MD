@@ -12,6 +12,7 @@ Must :
 - [ ] Add a "change password" feature
 - [ ] Add a "change email" feature
 - [ ] Add a "delete account" feature
+- [ ] Use Mpdf to generate bill and store it in order as bytes
 
 Should :
 - [ ] Fix CSS everywhere
@@ -20,6 +21,7 @@ Should :
 Could :
 - [ ] Encode pictures in webp
 - [ ] Compress pictures
+- [ ] Research about security when uploading files
 
 Won't :
 - [ ] Finish the project (lol)
